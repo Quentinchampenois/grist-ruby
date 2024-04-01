@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require "faraday"
 require "grist"
+require 'json'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -12,4 +14,10 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+end
+
+
+def load_fixture(filepath)
+  file = File.read(filepath)
+  JSON.parse(file)
 end
