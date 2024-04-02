@@ -1,6 +1,6 @@
 module Grist
   module HTTP
-    def get(path, **params)
+    def get(path, **_params)
       request(method: :get, path: path)
     end
 
@@ -12,14 +12,18 @@ module Grist
       request(method: :put, path: path, payload: params)
     end
 
-    def delete(path, **params)
+    def patch(path, **params)
+      request(method: :patch, path: path, payload: params)
+    end
+
+    def delete(path, **_params)
       request(method: :delete, path: path)
     end
 
     def conn
       Faraday.new(url: @url) do |c|
         c.request :json
-        c.request :authorization, 'Bearer', @token
+        c.request :authorization, "Bearer", @token
 
         c.response :json
         c.response :raise_error

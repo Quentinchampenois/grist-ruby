@@ -2,7 +2,7 @@
 
 require "faraday"
 require "grist"
-require 'json'
+require "json"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -15,7 +15,6 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
-
 
 def load_fixture(filepath)
   file = File.read(filepath)

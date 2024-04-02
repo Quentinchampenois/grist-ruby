@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe Grist::Client do
   subject { described_class.new(url: url, token: token) }
