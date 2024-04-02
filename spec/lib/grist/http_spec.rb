@@ -29,10 +29,10 @@ RSpec.describe Grist::HTTP do
     end
   end
 
-  describe "#delete" do
+  describe "#destroy" do
     it "sends a DELETE request" do
       expect(dummy_class).to receive(:request).with(method: :delete, path: "/path")
-      dummy_class.delete("/path")
+      dummy_class.destroy("/path")
     end
   end
 

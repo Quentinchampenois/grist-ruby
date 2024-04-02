@@ -5,17 +5,31 @@ module Grist
         get("/orgs/#{organization_id}/workspaces")
       end
 
+      def workspace(id)
+        get("/workspaces/#{id}")
+      end
+
       def create(organization_id, payload, **params)
         post("/orgs/#{organization_id}/workspaces", payload, params)
       end
       alias create_workspace create
 
-      def list_users_with_access(id)
-        get("/orgs/#{id}/access")
+      def update(id, payload, **params)
+        patch("/workspaces/#{id}", payload, params)
+      end
+      alias update_workspace update
+
+      def delete(id)
+        destroy("/workspaces/#{id}")
+      end
+      alias delete_workspace delete
+
+      def list_workspace_users(id)
+        get("/workspaces/#{id}/access")
       end
 
-      def manage_access(id, **params)
-        patch("/orgs/#{id}/access", params)
+      def manage_workspace_access(id, payload, **params)
+        patch("/workspaces/#{id}/access", payload, params)
       end
     end
   end

@@ -16,7 +16,7 @@ module Grist
       request(method: :patch, path: path, payload: params)
     end
 
-    def delete(path, **_params)
+    def destroy(path, **_params)
       request(method: :delete, path: path)
     end
 
