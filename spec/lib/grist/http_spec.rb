@@ -12,28 +12,28 @@ RSpec.describe Grist::HTTP do
 
   describe "#get" do
     it "sends a GET request" do
-      expect(dummy_class).to receive(:request).with(method: :get, path: "/path")
+      expect(dummy_class).to receive(:request).with(method: :get, path: "/api/path")
       dummy_class.get("/path")
     end
   end
 
   describe "#post" do
     it "sends a POST request" do
-      expect(dummy_class).to receive(:request).with(method: :post, path: "/path", payload: { key: "value" })
+      expect(dummy_class).to receive(:request).with(method: :post, path: "/api/path", payload: { key: "value" })
       dummy_class.post("/path", key: "value")
     end
   end
 
   describe "#put" do
     it "sends a PUT request" do
-      expect(dummy_class).to receive(:request).with(method: :put, path: "/path", payload: { key: "value" })
+      expect(dummy_class).to receive(:request).with(method: :put, path: "/api/path", payload: { key: "value" })
       dummy_class.put("/path", key: "value")
     end
   end
 
   describe "#destroy" do
     it "sends a DELETE request" do
-      expect(dummy_class).to receive(:request).with(method: :delete, path: "/path")
+      expect(dummy_class).to receive(:request).with(method: :delete, path: "/api/path")
       dummy_class.destroy("/path")
     end
   end
@@ -59,7 +59,7 @@ RSpec.describe Grist::HTTP do
       end
 
       it "rescues the error and outputs status and body" do
-        expect { dummy_class.send(:request, method: :get, path: "/path") }.to output("500\nerror body\n").to_stdout
+        expect { dummy_class.send(:request, method: :get, path: "/api/path") }.to output("500\nerror body\n").to_stdout
       end
     end
   end
