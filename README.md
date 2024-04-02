@@ -1,24 +1,28 @@
 # Grist
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/grist`. To experiment with that code, run `bin/console` for an interactive prompt.
+Grist ruby library to interact with Grist API. 
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this line to your application's Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
+```ruby
+    gem "grist", git: "https://github.com/quentinchampenois/grist.git"
+```
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+_First release will be published on RubyGems_
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+## Examples
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+List all organizations
 
-## Usage
+```ruby
+require "faraday"
+require "grist"
 
-TODO: Write usage instructions here
+client = Grist::Client.new(url: "http://localhost:8484", token: "API_TOKEN")
+puts client.organizations
+```
 
 ## Development
 
@@ -28,7 +32,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/grist. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/grist/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/quentinchampenois/grist.
 
 ## License
 

@@ -3,27 +3,27 @@
 module Grist
   module HTTP
     def get(path, **_params)
-      request(method: :get, path: path)
+      request(method: :get, path: "/api#{path}")
     end
 
     def post(path, **params)
-      request(method: :post, path: path, payload: params)
+      request(method: :post, path: "/api#{path}", payload: params)
     end
 
     def put(path, **params)
-      request(method: :put, path: path, payload: params)
+      request(method: :put, path: "/api#{path}", payload: params)
     end
 
     def patch(path, **params)
-      request(method: :patch, path: path, payload: params)
+      request(method: :patch, path: "/api#{path}", payload: params)
     end
 
     def destroy(path, **_params)
-      request(method: :delete, path: path)
+      request(method: :delete, path: "/api#{path}")
     end
 
     def conn
-      Faraday.new(url: @url) do |c|
+      ::Faraday.new(url: @url) do |c|
         c.request :json
         c.request :authorization, "Bearer", @token
 
@@ -37,7 +37,7 @@ module Grist
 
     def request(method: nil, path: "", payload: nil, headers: {})
       connection.send(method, path, payload, headers)
-    rescue Faraday::Error => e
+    rescue ::Faraday::Error => e
       puts e.response[:status]
       puts e.response[:body]
     end
