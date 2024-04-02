@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe Grist::Endpoint::Organization do
@@ -20,20 +22,20 @@ RSpec.describe Grist::Endpoint::Organization do
 
       it "returns the response" do
         expect(subject.organizations).to eq([
-                                     {
-                                       "id" => 42,
-                                       "name" => "Grist Labs",
-                                       "domain" => "gristlabs",
-                                       "owner" => {
-                                         "id" => 101,
-                                         "name" => "Helga Hufflepuff",
-                                         "picture" => "null"
-                                       },
-                                       "access" => "owners",
-                                       "createdAt" => "2019-09-13T15:42:35.000Z",
-                                       "updatedAt" => "2019-09-13T15:42:35.000Z"
-                                     }
-                                   ])
+                                              {
+                                                "id" => 42,
+                                                "name" => "Grist Labs",
+                                                "domain" => "gristlabs",
+                                                "owner" => {
+                                                  "id" => 101,
+                                                  "name" => "Helga Hufflepuff",
+                                                  "picture" => "null"
+                                                },
+                                                "access" => "owners",
+                                                "createdAt" => "2019-09-13T15:42:35.000Z",
+                                                "updatedAt" => "2019-09-13T15:42:35.000Z"
+                                              }
+                                            ])
       end
     end
   end
@@ -55,18 +57,18 @@ RSpec.describe Grist::Endpoint::Organization do
 
       it "returns the response" do
         expect(subject.organization(id)).to eq({
-                                         "id" => 42,
-                                         "name" => "Grist Labs",
-                                         "domain" => "gristlabs",
-                                         "owner" => {
-                                           "id" => 101,
-                                           "name" => "Helga Hufflepuff",
-                                           "picture" => "null"
-                                         },
-                                         "access" => "owners",
-                                         "createdAt" => "2019-09-13T15:42:35.000Z",
-                                         "updatedAt" => "2019-09-13T15:42:35.000Z"
-                                       })
+                                                 "id" => 42,
+                                                 "name" => "Grist Labs",
+                                                 "domain" => "gristlabs",
+                                                 "owner" => {
+                                                   "id" => 101,
+                                                   "name" => "Helga Hufflepuff",
+                                                   "picture" => "null"
+                                                 },
+                                                 "access" => "owners",
+                                                 "createdAt" => "2019-09-13T15:42:35.000Z",
+                                                 "updatedAt" => "2019-09-13T15:42:35.000Z"
+                                               })
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe Grist::Endpoint::Workspace do
@@ -51,14 +53,13 @@ RSpec.describe Grist::Endpoint::Workspace do
   describe "#manage_workspace_access" do
     let(:id) { 42 }
     let(:body) do
-      {"delta" => {
-          "users" => [
-            "owner@example.org" => "owner",
+      { "delta" => {
+        "users" => [
+          "owner@example.org" => "owner",
 
-            "viewer@example.org" => "viewer"
-          ]
-        }
-      }
+          "viewer@example.org" => "viewer"
+        ]
+      } }
     end
 
     it "calls the patch method with the correct path" do

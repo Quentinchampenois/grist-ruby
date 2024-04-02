@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Grist
   module HTTP
     def get(path, **_params)

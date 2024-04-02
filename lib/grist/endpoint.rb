@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "grist/endpoint/organization"
 require "grist/endpoint/workspace"
 
