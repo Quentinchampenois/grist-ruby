@@ -5,10 +5,10 @@ RSpec.describe Grist::Endpoint::Organization do
 
   let(:grist_client) { Grist::Client.new }
 
-  describe "#list" do
+  describe "#organizations" do
     it "calls the get method with the correct path" do
       expect_any_instance_of(Grist::HTTP).to receive(:get).with("/orgs")
-      subject.list
+      subject.organizations
     end
 
     context "when the request is successful" do
@@ -19,7 +19,7 @@ RSpec.describe Grist::Endpoint::Organization do
       end
 
       it "returns the response" do
-        expect(subject.list).to eq([
+        expect(subject.organizations).to eq([
                                      {
                                        "id" => 42,
                                        "name" => "Grist Labs",
@@ -38,12 +38,12 @@ RSpec.describe Grist::Endpoint::Organization do
     end
   end
 
-  describe "#find" do
+  describe "#organization" do
     let(:id) { 42 }
 
     it "calls the get method with the correct path" do
       expect_any_instance_of(Grist::HTTP).to receive(:get).with("/orgs/42")
-      subject.find(id)
+      subject.organization(id)
     end
 
     context "when the request is successful" do
@@ -54,7 +54,7 @@ RSpec.describe Grist::Endpoint::Organization do
       end
 
       it "returns the response" do
-        expect(subject.find(id)).to eq({
+        expect(subject.organization(id)).to eq({
                                          "id" => 42,
                                          "name" => "Grist Labs",
                                          "domain" => "gristlabs",
@@ -71,13 +71,13 @@ RSpec.describe Grist::Endpoint::Organization do
     end
   end
 
-  describe "#update" do
+  describe "#update_organization" do
     let(:id) { 42 }
     let(:body) { { name: "Grist Labs" } }
 
     it "calls the patch method with the correct path" do
       expect_any_instance_of(Grist::HTTP).to receive(:patch).with("/orgs/42", { name: "Grist Labs" })
-      subject.update(id, body)
+      subject.update_organization(id, body)
     end
   end
 

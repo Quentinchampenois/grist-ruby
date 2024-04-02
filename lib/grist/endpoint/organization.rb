@@ -1,17 +1,18 @@
 module Grist
   module Endpoint
     module Organization
-      def list
+      def organizations
         get("/orgs")
       end
 
-      def find(id)
+      def organization(id)
         get("/orgs/#{id}")
       end
 
       def update(id, **params)
         patch("/orgs/#{id}", params)
       end
+      alias update_organization update
 
       def list_users_with_access(id)
         get("/orgs/#{id}/access")
