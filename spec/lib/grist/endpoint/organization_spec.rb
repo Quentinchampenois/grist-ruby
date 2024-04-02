@@ -76,7 +76,7 @@ RSpec.describe Grist::Endpoint::Organization do
     let(:body) { { name: "Grist Labs" } }
 
     it "calls the patch method with the correct path" do
-      expect_any_instance_of(Grist::HTTP).to receive(:patch).with("/orgs/42", { name: "Grist Labs" })
+      expect_any_instance_of(Grist::HTTP).to receive(:patch).with("/orgs/42", { name: "Grist Labs" }, {})
       subject.update_organization(id, body)
     end
   end

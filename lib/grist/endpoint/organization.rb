@@ -9,8 +9,8 @@ module Grist
         get("/orgs/#{id}")
       end
 
-      def update(id, **params)
-        patch("/orgs/#{id}", params)
+      def update(id, payload, **params)
+        patch("/orgs/#{id}", payload, params)
       end
       alias update_organization update
 
