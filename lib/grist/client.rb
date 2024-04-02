@@ -7,8 +7,9 @@ module Grist
     include HTTP
     include Endpoint
 
-    def initialize(url: nil)
+    def initialize(url: nil, token: nil)
       @url = url
+      @token = token
     end
 
     def connection

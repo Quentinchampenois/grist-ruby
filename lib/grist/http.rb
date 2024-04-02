@@ -16,6 +16,17 @@ module Grist
       request(method: :delete, path: path)
     end
 
+    def conn
+      Faraday.new(url: @url) do |c|
+        c.request :json
+        c.request :authorization, 'Bearer', @token
+
+        c.response :json
+        c.response :raise_error
+        c.response :logger
+      end
+    end
+
     private
 
     def request(method: nil, path: "", payload: nil, headers: {})
@@ -23,15 +34,6 @@ module Grist
     rescue Faraday::Error => e
       puts e.response[:status]
       puts e.response[:body]
-    end
-  end
-
-  def conn
-    Faraday.new(url: @url) do |builder|
-      builder.request :json
-      builder.response :json
-      builder.response :raise_error
-      builder.response :logger
     end
   end
 end

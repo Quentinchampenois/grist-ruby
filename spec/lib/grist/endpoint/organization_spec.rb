@@ -1,10 +1,14 @@
 require "spec_helper"
 
 RSpec.describe Grist::Endpoint::Organization do
+  subject { grist_client }
+
+  let(:grist_client) { Grist::Client.new }
+
   describe "#list" do
     it "calls the get method with the correct path" do
       expect_any_instance_of(Grist::HTTP).to receive(:get).with("/orgs")
-      Grist::Client.new.list
+      subject.list
     end
 
     context "when the request is successful" do
@@ -13,8 +17,9 @@ RSpec.describe Grist::Endpoint::Organization do
       before do
         allow_any_instance_of(Grist::HTTP).to receive(:get).with("/orgs").and_return(orgs)
       end
+
       it "returns the response" do
-        expect(Grist::Client.new.list).to eq([
+        expect(subject.list).to eq([
                                                {
                                                  "id" => 42,
                                                  "name" => "Grist Labs",
