@@ -1,0 +1,13 @@
+{
+  "id": 42,
+  "name": "Grist Labs",
+  "domain": "gristlabs",
+  "owner": {
+    "id": 101,
+    "name": "Helga Hufflepuff",
+    "picture": "null"
+  },
+  "access": "owners",
+  "createdAt": "2019-09-13T15:42:35.000Z",
+  "updatedAt": "2019-09-13T15:42:35.000Z"
+}

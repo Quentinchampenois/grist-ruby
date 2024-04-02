@@ -4,6 +4,10 @@ module Grist
       def list
         get("/orgs")
       end
+
+      def find(id)
+        get("/orgs/#{id}")
+      end
     end
   end
 end
