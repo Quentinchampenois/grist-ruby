@@ -1,6 +1,11 @@
+[![Ruby](https://github.com/Quentinchampenois/grist-ruby/actions/workflows/main.yml/badge.svg)](https://github.com/Quentinchampenois/grist-ruby/actions/workflows/main.yml)
 # Grist
 
-Grist ruby library to interact with Grist API. 
+Grist ruby library to interact with [Grist](https://www.getgrist.com/) API.
+
+* [Get Grist](https://www.getgrist.com/)
+* [Grist API Documentation](https://support.getgrist.com/api/)
+* [Grist Core](https://github.com/gristlabs/grist-core)
 
 ## Installation
 
