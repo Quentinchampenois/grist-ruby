@@ -2,8 +2,8 @@
 
 module Grist
   module HTTP
-    def get(path, **_params)
-      request(method: :get, path: path)
+    def get(path, **params)
+      request(method: :get, path: path, query_params: params[:query_params])
     end
 
     def post(path, **params)
@@ -35,12 +35,18 @@ module Grist
 
     private
 
-    def request(method: nil, path: "", payload: nil, headers: {})
-      url = base_url + path
+    def request(method: nil, path: "", payload: nil, headers: {}, query_params: {})
+      url = url_with_query_params(path, query_params)
       connection.send(method, url, payload, headers)
     rescue ::Faraday::Error => e
       puts e.response[:status]
       puts e.response[:body]
+    end
+
+    def url_with_query_params(path, params)
+      url = base_url + path
+      url += "?" + ::URI.encode_www_form(params) unless params.empty?
+      url
     end
 
     def base_url

@@ -1,4 +1,4 @@
-[![Ruby](https://github.com/Quentinchampenois/grist-ruby/actions/workflows/main.yml/badge.svg)](https://github.com/Quentinchampenois/grist-ruby/actions/workflows/main.yml)
+[![Tests suite](https://github.com/Quentinchampenois/grist-ruby/actions/workflows/main.yml/badge.svg)](https://github.com/Quentinchampenois/grist-ruby/actions/workflows/main.yml)
 # Grist
 
 Grist ruby library to interact with [Grist](https://www.getgrist.com/) API.

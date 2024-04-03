@@ -12,7 +12,7 @@ RSpec.describe Grist::HTTP do
 
   describe "#get" do
     it "sends a GET request" do
-      expect(dummy_class).to receive(:request).with(method: :get, path: "/path")
+      expect(dummy_class).to receive(:request).with(method: :get, path: "/path", query_params: nil)
       dummy_class.get("/path")
     end
   end
@@ -49,6 +49,11 @@ RSpec.describe Grist::HTTP do
       it "sends the request with proper parameters" do
         expect(connection).to receive(:send).with(:get, "/api/path", nil, {})
         dummy_class.send(:request, method: :get, path: "/path")
+      end
+
+      it "sends the request with proper parameters" do
+        expect(connection).to receive(:send).with(:get, "/api/path?key=value&key2=value2", nil, {})
+        dummy_class.send(:request, method: :get, path: "/path", query_params: { key: "value", key2: "value2" })
       end
     end
 
