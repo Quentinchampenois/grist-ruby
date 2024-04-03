@@ -15,10 +15,10 @@ RSpec.describe Grist::Endpoint::Workspace do
     end
   end
 
-  describe "#create" do
+  describe "#create_workspace" do
     it "calls the post method with the correct path" do
       expect_any_instance_of(Grist::HTTP).to receive(:post).with("/orgs/42/workspaces", { name: "My Workspace" }, {})
-      subject.create(organization_id, { name: "My Workspace" })
+      subject.create_workspace(organization_id, { name: "My Workspace" })
     end
   end
 

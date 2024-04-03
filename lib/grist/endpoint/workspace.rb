@@ -11,10 +11,9 @@ module Grist
         get("/workspaces/#{id}")
       end
 
-      def create(organization_id, payload, **params)
+      def create_workspace(organization_id, payload, **params)
         post("/orgs/#{organization_id}/workspaces", payload, params)
       end
-      alias create_workspace create
 
       def update(id, payload, **params)
         patch("/workspaces/#{id}", payload, params)

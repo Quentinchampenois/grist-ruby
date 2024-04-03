@@ -52,7 +52,7 @@ module Grist
     def relative_api_path
       return "/api" if @url.nil?
 
-      api_path = if @url.size > 0 && @url[-1] == "/"
+      api_path = if !@url.empty? && @url[-1] == "/"
                    "api"
                  else
                    "/api"

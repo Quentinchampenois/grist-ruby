@@ -5,5 +5,4 @@ require "grist/client"
 
 module Grist
   class Error < StandardError; end
-  # Your code goes here...
 end
