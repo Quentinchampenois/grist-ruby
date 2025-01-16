@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative "lib/grist/ruby/version"
+require_relative "lib/grist/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "grist-ruby"
+  spec.name = "grist-grist"
   spec.version = Grist::Ruby::VERSION
   spec.authors = ["quentinchampenois"]
   spec.email = ["26109239+Quentinchampenois@users.noreply.github.com"]
@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = "Use this gem to interact with the a Grist API from your Ruby application."
   spec.homepage = "https://github.com/quentinchampenois/grist-ruby"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 2.6.0"
+  spec.required_ruby_version = ">= 3.2.0"
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
 

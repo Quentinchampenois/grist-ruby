@@ -2,10 +2,6 @@
 
 RSpec.describe Grist::Ruby do
   it "has a version number" do
-    expect(Grist::Ruby::VERSION).not_to be nil
-  end
-
-  it "does something useful" do
-    expect(false).to eq(true)
+    expect(Grist::Ruby::VERSION).to eq "0.1.0"
   end
 end

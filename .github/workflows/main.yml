@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Ruby ${{ matrix.ruby }}
+    name: Ruby ${{ matrix.grist }}
     strategy:
       matrix:
         ruby:
@@ -19,9 +19,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
+      uses: grist/setup-grist@v1
       with:
-        ruby-version: ${{ matrix.ruby }}
+        ruby-version: ${{ matrix.grist }}
         bundler-cache: true
     - name: Run the default task
       run: bundle exec rake
