@@ -10,13 +10,13 @@ module Grist
     end
 
     def request(method, endpoint, params = {})
-      uri = URI("#{base_url}/#{endpoint}")
+      uri = URI("#{base_url}/api/#{endpoint}")
       uri.query = URI.encode_www_form(params) if method == :get
 
-      http = Net::HTTP.new(uri.host, uri.port)
+      http = ::Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
 
-      request = Net::HTTP::const_get(method.capitalize).new(uri)
+      request = ::Net::HTTP::const_get(method.capitalize).new(uri)
       request["Authorization"] = "Bearer #{api_key}"
       request["Content-Type"] = "application/json"
       request.body = params.to_json unless method == :get
