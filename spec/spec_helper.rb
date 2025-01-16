@@ -3,6 +3,7 @@
 require "bundler/setup"
 require "grist"
 require "grist/client"
+require "grist/resource"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
