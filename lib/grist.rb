@@ -4,5 +4,5 @@ require_relative "grist/version"
 
 module Grist
   class Error < StandardError; end
-  # Your code goes here...
+  class MissingApiKey < Error; end
 end
