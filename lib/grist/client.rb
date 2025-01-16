@@ -1,16 +1,17 @@
 module Grist
   class Client
-    attr_reader :base_url, :api_key
+    attr_reader :base_url, :base_api_url, :api_key
 
     BASE_URL = "https://api.getgrist.com"
 
     def initialize(api_key:, url:)
       @base_url = url || BASE_URL
+      @base_api_url = "#{base_url}/api"
       @api_key = api_key
     end
 
     def request(method, endpoint, params = {})
-      uri = URI("#{base_url}/api/#{endpoint}")
+      uri = URI("#{base_api_url}/#{endpoint}")
       uri.query = URI.encode_www_form(params) if method == :get
 
       http = ::Net::HTTP.new(uri.host, uri.port)

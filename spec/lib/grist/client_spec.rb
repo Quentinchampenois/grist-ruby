@@ -8,6 +8,7 @@ RSpec.describe Grist::Client do
   describe "#initialize" do
     it "initializes with a base_url and api_key" do
       expect(subject.base_url).to eq("https://api.example.com")
+      expect(subject.base_api_url).to eq("https://api.example.com/api")
       expect(subject.api_key).to eq("1234")
     end
 
@@ -16,6 +17,7 @@ RSpec.describe Grist::Client do
 
       it "initializes with a default base_url" do
         expect(subject.base_url).to eq("https://api.getgrist.com")
+        expect(subject.base_api_url).to eq("https://api.getgrist.com/api")
       end
     end
   end
