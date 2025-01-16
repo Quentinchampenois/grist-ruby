@@ -10,5 +10,5 @@ require_relative "grist/resource"
 
 module Grist
   class Error < StandardError; end
-  class MissingApiKey < Error; end
+  class InvalidAPIKey < Error; end
 end

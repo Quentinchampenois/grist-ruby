@@ -23,7 +23,12 @@ module Grist
       request.body = params.to_json unless method == :get
 
       response = http.request(request)
+      raise InvalidAPIKey if response.is_a?(Net::HTTPUnauthorized)
       JSON.parse(response.body)
+    rescue SocketError
+      { error: "Grist API Url endpoint cannot be reached" }
+    rescue InvalidAPIKey
+      { error: "Unauthorized. Check again the api key" }
     rescue StandardError => e
       { error: e.message }
     end
