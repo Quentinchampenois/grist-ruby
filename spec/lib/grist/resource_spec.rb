@@ -55,4 +55,11 @@ RSpec.describe Grist::Resource do
       subject.delete(1)
     end
   end
+
+  describe "#sub_resource" do
+    it "creates a sub resource with sub_path" do
+      sub_res = subject.sub_resource("example")
+      expect(sub_res.resource_name).to eq("orgs/example")
+    end
+  end
 end

@@ -27,5 +27,9 @@ module Grist
     def delete(id)
       client.request(:delete, "#{resource_name}/#{id}")
     end
+
+    def sub_resource(sub_path)
+      self.class.new(client, "#{resource_name}/#{sub_path}")
+    end
   end
 end
