@@ -15,7 +15,7 @@ module Grist
       uri.query = URI.encode_www_form(params) if method == :get
 
       http = ::Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
+      http.use_ssl = !localhost?
 
       request = ::Net::HTTP::const_get(method.capitalize).new(uri)
       request["Authorization"] = "Bearer #{api_key}"
@@ -24,13 +24,19 @@ module Grist
 
       response = http.request(request)
       raise InvalidAPIKey if response.is_a?(Net::HTTPUnauthorized)
-      JSON.parse(response.body)
+      { data: JSON.parse(response.body) }
     rescue SocketError
       { error: "Grist API Url endpoint cannot be reached" }
     rescue InvalidAPIKey
       { error: "Unauthorized. Check again the api key" }
     rescue StandardError => e
       { error: e.message }
+    end
+
+    private
+
+    def localhost?
+      base_url.include?("http://localhost")
     end
   end
 end

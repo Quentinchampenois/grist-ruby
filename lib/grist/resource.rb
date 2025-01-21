@@ -9,27 +9,41 @@ module Grist
     end
 
     def all(params = {})
-      client.request(:get, resource_name, params)
+      result client.request(:get, resource_name, params)
     end
 
     def find(id)
-      client.request(:get, "#{resource_name}/#{id}")
+      result client.request(:get, "#{resource_name}/#{id}")
     end
 
     def create(attrs = {})
-      client.request(:post, resource_name, attrs)
+      result client.request(:post, resource_name, attrs)
     end
 
     def update(id, attrs = {})
-      client.request(:put, "#{resource_name}/#{id}", attrs)
+      result client.request(:put, "#{resource_name}/#{id}", attrs)
     end
 
     def delete(id)
-      client.request(:delete, "#{resource_name}/#{id}")
+      result client.request(:delete, "#{resource_name}/#{id}")
     end
 
-    def sub_resource(sub_path)
-      self.class.new(client, "#{resource_name}/#{sub_path}")
+    def sub_resource(id, sub_path)
+      self.class.new(client, "#{resource_name}/#{id}/#{sub_path}")
+    end
+
+    private
+
+    def result(request)
+      data = request[:data]
+      error = request[:error]
+
+      OpenStruct.new(
+        results: data,
+        error: error,
+        success?: error.nil?,
+        error?: !error.nil?
+      )
     end
   end
 end
