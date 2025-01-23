@@ -7,6 +7,7 @@ require "grist/api"
 require "grist/response"
 require "grist/resources/base"
 require "grist/resources/document"
+require "grist/resources/table"
 require "grist/resources/record"
 
 
