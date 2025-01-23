@@ -24,13 +24,18 @@ module Grist
 
       response = http.request(request)
       raise InvalidAPIKey if response.is_a?(Net::HTTPUnauthorized)
-      { data: JSON.parse(response.body) }
+
+      data = JSON.parse(response.body)
+      raise APIError, data["error"] if !data["error"].nil? && !data["error"].empty?
+      Grist::Response.new(data: data, code: response&.code)
+    rescue Net::OpenTimeout, Net::ReadTimeout
+      Grist::Response.new(code: response&.code, error: "Grist API URL endpoint timed out")
     rescue SocketError
-      { error: "Grist API Url endpoint cannot be reached" }
+      Grist::Response.new(code: response&.code, error: "Grist API URL endpoint cannot be reached")
     rescue InvalidAPIKey
-      { error: "Unauthorized. Check again the api key" }
+      Grist::Response.new(code: response&.code, error: "Unauthorized API key")
     rescue StandardError => e
-      { error: e.message }
+      Grist::Response.new(code: response&.code, error: e.message)
     end
 
     private
