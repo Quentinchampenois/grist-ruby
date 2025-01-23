@@ -3,25 +3,32 @@
 require "bundler/setup"
 require 'grist'
 
-client = Grist::Client.new(api_key: ENV["GRIST_API_KEY"], url: ENV["GRIST_API_URL"])
-grist_orgs = Grist::Resource.new(client, "orgs")
+api = Grist::API.new(api_key: ENV["GRIST_API_KEY"], base_url: ENV["GRIST_API_URL"])
 
-orgs = grist_orgs.all
+# Fetch all organizations
+organizations = api.organizations.list[:data]
 
-if orgs.error?
-  puts "Error: #{orgs.error}"
-  return
-end
+org_id = organizations.first['id']
+# Find a specific organization
+puts api.organizations.get(org_id)
 
-return if orgs.results.empty?
-puts "Found #{orgs.results&.count} organizations !"
+# Update an organization
+api.organizations.update(org_id, { name: 'Updated Org Name' })
 
-puts "First organization: #{orgs.results.first["name"]} owned by #{orgs.results.first["owner"]["name"]} !"
-puts grist_orgs.find(orgs.results.first["id"])
+# Delete an organization
+# api.organizations.delete(org_id)
 
-id = orgs.results.first["id"]
-orgs_access = grist_orgs.sub_resource(id,"access")
+# List workspaces in an organization
+workspace = api.organizations.workspaces(org_id)
 
-orgs_access.all.results["users"].map do |user|
-  puts "#{user["email"]} is authorized to access the organization #{orgs.results.first["name"]} !"
-end
+# Create a new workspace
+api.organizations.create_workspace(org_id, { name: 'New Workspace' })
+
+# Fetch all documents
+doc_id = workspace[:data].first["docs"].first["id"]
+
+# Download document as SQL
+puts api.documents.download_sql(doc_id)
+
+# Move document to another workspace
+# api.documents.move('docId', { workspaceId: 'newWorkspaceId' })

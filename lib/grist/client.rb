@@ -4,8 +4,8 @@ module Grist
 
     BASE_URL = "https://api.getgrist.com"
 
-    def initialize(api_key:, url:)
-      @base_url = url || BASE_URL
+    def initialize(api_key:, base_url:)
+      @base_url = base_url || BASE_URL
       @base_api_url = "#{base_url}/api"
       @api_key = api_key
     end
