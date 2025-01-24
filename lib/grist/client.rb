@@ -26,7 +26,7 @@ module Grist
       raise InvalidAPIKey if response.is_a?(Net::HTTPUnauthorized)
 
       data = JSON.parse(response.body)
-      raise APIError, data["error"] if !data["error"].nil? && !data["error"].empty?
+      # raise APIError, data["error"] if !data["error"].nil? && !data["error"].empty?
       Grist::Response.new(data: data, code: response&.code)
     rescue Net::OpenTimeout, Net::ReadTimeout
       Grist::Response.new(code: response&.code, error: "Grist API URL endpoint timed out")
