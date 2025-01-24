@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "bundler/setup"
+require 'webmock/rspec'
 require "grist"
 require "grist/client"
 require "grist/api"
