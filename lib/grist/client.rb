@@ -4,8 +4,8 @@ module Grist
 
     BASE_URL = "https://api.getgrist.com"
 
-    def initialize(api_key:, url:)
-      @base_url = url || BASE_URL
+    def initialize(api_key:, base_url:)
+      @base_url = base_url || BASE_URL
       @base_api_url = "#{base_url}/api"
       @api_key = api_key
     end
@@ -15,7 +15,7 @@ module Grist
       uri.query = URI.encode_www_form(params) if method == :get
 
       http = ::Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
+      http.use_ssl = !localhost?
 
       request = ::Net::HTTP::const_get(method.capitalize).new(uri)
       request["Authorization"] = "Bearer #{api_key}"
@@ -24,13 +24,24 @@ module Grist
 
       response = http.request(request)
       raise InvalidAPIKey if response.is_a?(Net::HTTPUnauthorized)
-      JSON.parse(response.body)
+
+      data = JSON.parse(response.body)
+      # raise APIError, data["error"] if !data["error"].nil? && !data["error"].empty?
+      Grist::Response.new(data: data, code: response&.code)
+    rescue Net::OpenTimeout, Net::ReadTimeout
+      Grist::Response.new(code: response&.code, error: "Grist API URL endpoint timed out")
     rescue SocketError
-      { error: "Grist API Url endpoint cannot be reached" }
+      Grist::Response.new(code: response&.code, error: "Grist API URL endpoint cannot be reached")
     rescue InvalidAPIKey
-      { error: "Unauthorized. Check again the api key" }
+      Grist::Response.new(code: response&.code, error: "Unauthorized API key")
     rescue StandardError => e
-      { error: e.message }
+      Grist::Response.new(code: response&.code, error: e.message)
+    end
+
+    private
+
+    def localhost?
+      base_url.include?("http://localhost")
     end
   end
 end
