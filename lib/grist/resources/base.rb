@@ -21,7 +21,7 @@ module Grist
       end
 
       def update(id, data)
-        client.request(:put, "#{path}/#{id}", data)
+        client.request(:patch, "#{path}/#{id}", data)
       end
 
       def delete(id)

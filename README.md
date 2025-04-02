@@ -1,26 +1,34 @@
 # Grist::Ruby
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/grist/ruby`. To experiment with that code, run `bin/console` for an interactive prompt.
+This gem provides a Ruby client for the Grist API. 
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this line to your application's Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
+```ruby
+gem 'grist-ruby'
+```
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+And install the gem:
 
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+```bash
+$ bundle install
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+See `examples/main.rb`
 
 ## Development
+
+Start a Grist dockerized instance locally and run the console
+
+```bash
+$ docker run -d --rm -p 8484:8484 --name grist -v ./volumes/data:/persist:rw -e GRIST_SESSION_SECRET=invent-a-secret-here -it gristlabs/grist
+
+$ GRIST_API_KEY=<GRIST_API_KEY> GRIST_API_URL=http://localhost:8484 bundle exec bin/console
+```
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 

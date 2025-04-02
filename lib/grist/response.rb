@@ -5,11 +5,11 @@ module Grist
     def initialize(data: nil, error: nil, code: nil)
       @data = data
       @error = error
-      @code = code
+      @code = code&.to_i
     end
 
     def success?
-      error.nil?
+      error.nil? && (@code >= 200 && @code < 400)
     end
   end
 end
