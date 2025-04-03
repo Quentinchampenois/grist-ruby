@@ -22,16 +22,10 @@ raise ArgumentError, "You must provide env var : 'GRIST_API_URL'" if ENV.fetch("
 Grist::API.new(api_key: ENV["GRIST_API_KEY"], base_url: ENV["GRIST_API_URL"])
 
 orgs = Grist::Types::Organization.all
-# org = Grist::Types::Organization.update(orgs.last.id, { name: "Hello #{rand(1_000)}" })
-# puts org.name
-
 org = orgs.last
-org.create_workspace({ name: "Workspace N°#{rand(1_000)}" })
+ws = org.create_workspace({ name: "Workspace N°#{rand(1_000)}" })
 # Grist::Types::Organization.access(orgs.last.id)
 # Grist::Types::Workspace.create(orgs.last.id, { name: "Hello WS #{rand(1_000)}" })
-ws = org.workspaces.first
-puts ws.name
-puts ws.docs
 
 doc = ws.create_doc({
                       name: "Decidim",
@@ -49,9 +43,8 @@ doc.create_tables({
                         "columns" => [
                           { "id" => "name", "fields" => { "label" => "Module name" } },
                           { "id" => "description", "fields" => { "label" => "Description" } },
-                          { "id" => "version", "fields" => { "label" => "Decidim version" } },
-                        ]
-                      },
+                          { "id" => "version", "fields" => { "label" => "Decidim version" } }
+                        ] }
                     ]
                   })
 
@@ -61,14 +54,39 @@ doc.create_tables({
                         "columns" => [
                           { "id" => "name", "fields" => { "label" => "Decidim name" } },
                           { "id" => "url", "fields" => { "label" => "Public URL" } },
-                          { "id" => "version", "fields" => { "label" => "Decidim version" } },
-                        ]
-                      },
+                          { "id" => "version", "fields" => { "label" => "Decidim version" } }
+                        ] }
                     ]
                   })
 
-doc.tables.each do |table|
-  puts table.inspect
-  puts table.columns.inspect
+doc = ws.docs.first
+tables = doc.tables
+
+puts "Tables:"
+tables.each do |table|
+  puts table.id
+  puts "Total records : #{table.records.count}"
 end
+tables.last&.records({ limit: 10 })&.each do |record|
+  puts record.inspect
+end
+
+table = tables.last
+table.create_records("records" => [
+                       {
+                         "fields" => {
+                           "name" => "Decidim Barcelona",
+                           "url" => "https://decidim.barcelona",
+                           "version" => "0.29.2"
+                         }
+                       },
+                       {
+                         "fields" => {
+                           "name" => "Loire Atlantique",
+                           "url" => "https://cd44.osp.cat",
+                           "version" => "0.27.4"
+                         }
+                       }
+                     ])
+
 puts "Ending."

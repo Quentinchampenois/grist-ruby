@@ -9,33 +9,21 @@ module Grist
 
       PATH = "/docs"
       KEYS = %w[
-        name
-        createdAt
-        updatedAt
         id
-        isPinned
-        urlId
-        trunkId
-        type
-        forks
-        access
+        fields
       ].freeze
 
       attr_accessor(*KEYS)
 
       def initialize(params = {})
-        @doc_id = params[:doc_id]
         KEYS.each do |key|
           instance_variable_set("@#{key}", params[key])
         end
+        @doc_id = params[:doc_id]
       end
 
       def deleted?
         @deleted ||= false
-      end
-
-      def base_api_url
-        "#{ENV["GRIST_API_URL"]}/api/workspaces/#{@doc_id}"
       end
 
       def columns_path
@@ -49,6 +37,33 @@ module Grist
         grist_res.data.map do |column|
           Column.new(column)
         end
+      end
+
+      def records_path
+        "/docs/#{@doc_id}/tables/#{@id}/records"
+      end
+
+      def records(params = {})
+        grist_res = request(:get, records_path, params)
+
+        return [] unless grist_res.success? && grist_res.data
+
+        @records = grist_res.data["records"].map do |record|
+          Record.new(record.merge(doc_id: @doc_id, table_id: @id))
+        end
+
+        @records
+      end
+
+      def create_records(data)
+        grist_res = request(:post, records_path, data)
+        return [] unless grist_res.success? && grist_res.data
+
+        @records = grist_res.data["records"].map do |record|
+          Record.new(record.merge(doc_id: @doc_id, table_id: @id))
+        end
+
+        @records
       end
 
       # def base_api_url

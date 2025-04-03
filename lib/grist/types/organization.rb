@@ -31,8 +31,16 @@ module Grist
         @deleted ||= false
       end
 
+      # List Workspaces in the organization
+      # # # @return [Array | nil] The workspaces array
+      # @note API: https://support.getgrist.com/api/#tag/workspaces
       def list_workspaces
-        request(:get, workspaces_path)
+        grist_res = request(:get, workspaces_path)
+        return [] unless grist_res.success? && grist_res.data
+
+        grist_res.data.map do |workspace|
+          Workspace.new(workspace)
+        end
       end
 
       # Create a new Workspace in the organization

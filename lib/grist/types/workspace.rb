@@ -31,14 +31,22 @@ module Grist
         @docs = []
       end
 
-      def docs
-
-        return @docs if @docs.is_a?(Array) && @docs.first.is_a?(Grist::Types::Doc)
-
-        @docs.map! do |doc|
-          Doc.new(doc)
-        end
-      end
+      # def docs
+      #   grist_res = request(:get, create_doc_path)
+      #   return [] unless grist_res.success? && grist_res.data
+      #
+      #   @docs = grist_res.data.map do |doc|
+      #     doc["id"] = doc["urlId"]
+      #     doc.transform_keys!(&:to_s)
+      #     doc["workspace_id"] = @id
+      #     doc["org_id"] = @org_id
+      #     doc["owner"] = @owner
+      #     doc["access"] = @access
+      #     doc["createdAt"] = Time.parse(doc["createdAt"])
+      #     doc["updatedAt"] = Time.parse(doc["updatedAt"])
+      #     Doc.new(doc)
+      #   end
+      # end
 
       def deleted?
         @deleted ||= false
