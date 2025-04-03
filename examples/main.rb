@@ -22,30 +22,53 @@ raise ArgumentError, "You must provide env var : 'GRIST_API_URL'" if ENV.fetch("
 Grist::API.new(api_key: ENV["GRIST_API_KEY"], base_url: ENV["GRIST_API_URL"])
 
 orgs = Grist::Types::Organization.all
-org = Grist::Types::Organization.update(orgs.last.id, { name: "Hello #{rand(1_000)}" })
-puts org.name
+# org = Grist::Types::Organization.update(orgs.last.id, { name: "Hello #{rand(1_000)}" })
+# puts org.name
 
-org.create_workspace({ name: "Hello WS #{rand(1_000)}" })
-
-Grist::Types::Organization.access(orgs.last.id)
-Grist::Types::Workspace.create(orgs.last.id, { name: "Hello WS #{rand(1_000)}" })
-wss = Grist::Types::Organization.list_workspaces(orgs.first.id)
-puts wss.first.docs
-
-ws = wss.first
+org = orgs.last
+org.create_workspace({ name: "Workspace N°#{rand(1_000)}" })
+# Grist::Types::Organization.access(orgs.last.id)
+# Grist::Types::Workspace.create(orgs.last.id, { name: "Hello WS #{rand(1_000)}" })
+ws = org.workspaces.first
 puts ws.name
+puts ws.docs
 
 doc = ws.create_doc({
-                      name: "Hello Doc #{rand(1_000)}",
-                      isPinned: rand(0..1) == 1
+                      name: "Decidim",
+                      isPinned: true
                     })
 
-docs = ws.docs
-puts doc&.name
-puts doc&.id
-puts "Listing tables"
+ws.create_doc({
+                name: "Github",
+                isPinned: false
+              })
 
-doc_tables = docs.last.tables
-puts doc_tables.inspect
+doc.create_tables({
+                    "tables" => [
+                      { "id" => "Community modules",
+                        "columns" => [
+                          { "id" => "name", "fields" => { "label" => "Module name" } },
+                          { "id" => "description", "fields" => { "label" => "Description" } },
+                          { "id" => "version", "fields" => { "label" => "Decidim version" } },
+                        ]
+                      },
+                    ]
+                  })
 
+doc.create_tables({
+                    "tables" => [
+                      { "id" => "Instances",
+                        "columns" => [
+                          { "id" => "name", "fields" => { "label" => "Decidim name" } },
+                          { "id" => "url", "fields" => { "label" => "Public URL" } },
+                          { "id" => "version", "fields" => { "label" => "Decidim version" } },
+                        ]
+                      },
+                    ]
+                  })
+
+doc.tables.each do |table|
+  puts table.inspect
+  puts table.columns.inspect
+end
 puts "Ending."

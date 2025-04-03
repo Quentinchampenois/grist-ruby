@@ -41,12 +41,19 @@ module Grist
       def create_workspace(data)
         grist_res = request(:post, workspaces_path, data)
 
-        return unless grist_res.success?
+        unless grist_res.success?
+          puts "Error creating workspace: #{grist_res.error}"
+          return
+        end
 
         data["id"] = grist_res.data
         data.transform_keys!(&:to_s)
 
-        Workspace.new(data)
+        @workspaces ||= []
+        ws = Workspace.new(data)
+        @workspaces << ws
+
+        ws
       end
 
       def workspaces_path

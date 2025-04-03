@@ -24,13 +24,15 @@ module Grist
       attr_reader :org_id
 
       def initialize(params = {})
-        @org_id = params[:org_id]
         KEYS.each do |key|
           instance_variable_set("@#{key}", params[key])
         end
+        @org_id = params[:org_id]
+        @docs = []
       end
 
       def docs
+
         return @docs if @docs.is_a?(Array) && @docs.first.is_a?(Grist::Types::Doc)
 
         @docs.map! do |doc|
@@ -60,11 +62,13 @@ module Grist
 
         return unless grist_res.success?
 
-        data.each_key do |key|
-          instance_variable_set("@#{key}", data[key])
-        end
+        @docs ||= []
+        data["id"] = grist_res.data
+        data.transform_keys!(&:to_s)
+        doc = Doc.new(data)
+        @docs << doc
 
-        self
+        doc
       end
 
       # def base_api_url

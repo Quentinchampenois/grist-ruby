@@ -24,7 +24,7 @@ module Grist
       attr_accessor(*KEYS)
 
       def initialize(params = {})
-        @ws_id = params[:ws_id]
+        @doc_id = params[:doc_id]
         KEYS.each do |key|
           instance_variable_set("@#{key}", params[key])
         end
@@ -35,7 +35,20 @@ module Grist
       end
 
       def base_api_url
-        "#{ENV["GRIST_API_URL"]}/api/workspaces/#{@ws_id}"
+        "#{ENV["GRIST_API_URL"]}/api/workspaces/#{@doc_id}"
+      end
+
+      def columns_path
+        "/docs/#{@doc_id}/tables/#{@id}/columns"
+      end
+
+      def columns
+        grist_res = request(:get, columns_path)
+        return [] unless grist_res.success? && grist_res.data
+
+        grist_res.data.map do |column|
+          Column.new(column)
+        end
       end
 
       # def base_api_url
@@ -46,8 +59,8 @@ module Grist
       # # @param id [Integer] The ID of the workspace to delete
       # # # @param data [Hash] The data to update the workspace with
       # # @return [self | nil] The updated workspace or nil if not found
-      def self.create(ws_id, data)
-        obj = new(ws_id: ws_id)
+      def self.create(doc_id, data)
+        obj = new(doc_id: doc_id)
         obj.create(data)
       end
 

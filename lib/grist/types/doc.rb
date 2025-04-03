@@ -40,6 +40,17 @@ module Grist
 
       def tables
         grist_res = request(:get, tables_path)
+        puts grist_res.inspect
+        return [] unless grist_res&.data.is_a?(Array)
+
+        @tables = grist_res.data&.map { |org| Table.new(org) }
+
+        self
+      end
+
+      def create_tables(data)
+        grist_res = request(:post, tables_path, data)
+        puts grist_res.inspect
         return [] unless grist_res&.data.is_a?(Array)
 
         @tables = grist_res.data&.map { |org| Table.new(org) }
