@@ -23,7 +23,8 @@ module Grist
 
       Grist::Response.new(data: data, code: response.code)
     rescue Net::OpenTimeout, Net::ReadTimeout, SocketError => e
-      res = Grist::Response.new(code: response&.code, error: "Grist endpoint is unreachable at #{request.uri}", type: e.class)
+      res = Grist::Response.new(code: response&.code, error: "Grist endpoint is unreachable at #{request.uri}",
+                                type: e.class)
       res.log_error
       raise NetworkError, res.print_error
     rescue APIError => e

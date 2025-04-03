@@ -15,22 +15,23 @@ require_relative "grist/types/organization"
 require_relative "grist/response"
 
 module Grist
-
   class Error < StandardError
     def self.help; end
   end
 
   class NetworkError < Error; end
   class APIError < Error; end
+
   class InvalidApiKey < APIError
     def self.help
       "help: Ensure the GRIST_API_KEY environment variable is set and valid."
     end
   end
+
   class NotFound < APIError; end
 
   def self.logger
-    @logger ||= Logger.new(STDOUT)
+    @logger ||= Logger.new($stdout)
   end
 
   def self.logger=(logger)
@@ -47,7 +48,7 @@ module Grist
 
   def self.base_api_url
     base_api_url = ENV["GRIST_API_URL"]
-    return base_api_url[0..-2] if base_api_url.nil? && base_api_url != "" && base_api_url.end_with?("/")
+    return base_api_url[0..-2] if !base_api_url.nil? && base_api_url != "" && base_api_url.end_with?("/")
 
     base_api_url
   end

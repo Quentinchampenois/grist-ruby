@@ -3,13 +3,6 @@
 require "bundler/setup"
 require "webmock/rspec"
 require "grist"
-require "grist/client"
-require "grist/api"
-require "grist/response"
-require "grist/resources/base"
-require "grist/resources/document"
-require "grist/resources/table"
-require "grist/resources/record"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
