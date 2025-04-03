@@ -5,21 +5,10 @@ require "bundler/setup"
 require "grist"
 require "byebug"
 
-class Organization
-  def initialize(client, path)
-    @client = client
-    @path = path
-  end
-
-  def self.list(params = {})
-    client.request(:get, "/orgs", params)
-  end
-end
-
 raise ArgumentError, "You must provide env var : 'GRIST_API_KEY'" if ENV.fetch("GRIST_API_KEY", "").empty?
 raise ArgumentError, "You must provide env var : 'GRIST_API_URL'" if ENV.fetch("GRIST_API_URL", "").empty?
 
-Grist::API.new(api_key: ENV["GRIST_API_KEY"], base_url: ENV["GRIST_API_URL"])
+# Grist::API.new(api_key: ENV["GRIST_API_KEY"], base_url: ENV["GRIST_API_URL"])
 
 orgs = Grist::Types::Organization.all
 org = orgs.last

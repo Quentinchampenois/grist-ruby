@@ -3,38 +3,31 @@
 module Grist
   module Rest
     def request(method, endpoint, params = {})
-      uri = URI("#{base_api_url}#{endpoint}")
+      uri = URI("#{::Grist.base_api_url}#{endpoint}")
       uri.query = URI.encode_www_form(params) if method == :get
 
       http = ::Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = !localhost?
+      http.use_ssl = !::Grist.localhost?
 
       request = ::Net::HTTP.const_get(method.capitalize).new(uri)
-      request["Authorization"] = "Bearer #{api_key}"
+      request["Authorization"] = ::Grist.token_auth
       request["Content-Type"] = "application/json"
       request.body = params.to_json unless method == :get
 
       response = http.request(request)
+
       raise InvalidAPIKey if response.is_a?(Net::HTTPUnauthorized)
       raise "Resource not found for '#{request.uri}'" if response.is_a?(Net::HTTPNotFound)
 
       data = JSON.parse(response.body)
-      # raise APIError, data["error"] if !data["error"].nil? && !data["error"].empty?
-      Grist::Response.new(data: data, code: response&.code)
+
+      Grist::Response.new(data: data, code: response.code)
     rescue Net::OpenTimeout, Net::ReadTimeout, SocketError => e
       Grist::Response.new(code: response&.code, error: "Grist endpoint is unreachable", type: e.class)
     rescue InvalidAPIKey => e
       Grist::Response.new(code: response&.code, error: "Unauthorized API key", type: e.class)
     rescue StandardError => e
       Grist::Response.new(code: response&.code, error: e.message, type: e.class)
-    end
-
-    def api_key
-      ENV["GRIST_API_KEY"]
-    end
-
-    def base_api_url
-      "#{ENV["GRIST_API_URL"]}/api"
     end
 
     def path
@@ -82,12 +75,6 @@ module Grist
       instance_variable_set("@deleted", true)
 
       self
-    end
-
-    private
-
-    def localhost?
-      base_api_url.include?("://localhost")
     end
   end
 end

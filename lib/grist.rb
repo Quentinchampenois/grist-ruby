@@ -23,6 +23,29 @@ require_relative "grist/resources/table"
 
 module Grist
   class APIError < StandardError; end
+
   class Error < StandardError; end
+
   class InvalidAPIKey < Error; end
+
+  def self.api_key
+    ENV["GRIST_API_KEY"]
+  end
+
+  def self.token_auth
+    "Bearer #{Grist.api_key}"
+  end
+
+  def self.base_api_url
+    base_api_url = ENV["GRIST_API_URL"]
+    if base_api_url.nil? && base_api_url != "" && base_api_url.end_with?("/")
+      return base_api_url[0..-2]
+    end
+
+    base_api_url
+  end
+
+  def self.localhost?
+    base_api_url.include?("http://localhost")
+  end
 end
