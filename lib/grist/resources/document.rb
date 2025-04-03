@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Grist
   module Resources
     class Document < Base
       def initialize(client)
-        super(client, 'docs')
+        super(client, "docs")
       end
 
       def download_sql(doc_id)

@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module Grist
   module Resources
     class Record < Base
-
       def initialize(client)
         @client = client
       end

@@ -6,6 +6,6 @@ require "grist"
 
 require "irb"
 
-api = Grist::API.new(api_key: ENV["GRIST_API_KEY"], base_url: ENV["GRIST_API_URL"])
+Grist::API.new(api_key: ENV["GRIST_API_KEY"], base_url: ENV["GRIST_API_URL"])
 
 IRB.start(__FILE__)

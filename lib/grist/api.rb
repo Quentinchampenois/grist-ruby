@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Grist
   class API
     attr_reader :client
 
-    def initialize(api_key:, base_url: 'https://api.getgrist.com')
+    def initialize(api_key:, base_url: "https://api.getgrist.com")
       @client = Client.new(api_key: api_key, base_url: base_url)
     end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Grist
   class Client
     attr_reader :base_url, :base_api_url, :api_key
@@ -17,7 +19,7 @@ module Grist
       http = ::Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = !localhost?
 
-      request = ::Net::HTTP::const_get(method.capitalize).new(uri)
+      request = ::Net::HTTP.const_get(method.capitalize).new(uri)
       request["Authorization"] = "Bearer #{api_key}"
       request["Content-Type"] = "application/json"
       request.body = params.to_json unless method == :get

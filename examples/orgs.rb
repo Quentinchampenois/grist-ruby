@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require "bundler/setup"
-require 'grist'
+require "grist"
 
 raise ArgumentError, "You must provide env var : 'GRIST_API_KEY'" if ENV.fetch("GRIST_API_KEY", "").empty?
 raise ArgumentError, "You must provide env var : 'GRIST_API_URL'" if ENV.fetch("GRIST_API_URL", "").empty?
@@ -19,15 +20,15 @@ organizations.data.each do |org|
 end
 
 # Create a new organization
-new_org = api.organizations.create({ name: 'GRIST CLI DASHBOARD' })
+new_org = api.organizations.create({ name: "GRIST CLI DASHBOARD" })
 # Reload organizations
 organizations = api.organizations.list.data if new_org.success?
-org_id = organizations.first['id']
+org_id = organizations.first["id"]
 # Find a specific organization
 puts api.organizations.get(org_id)
 
 # Update an organization
-api.organizations.update(org_id, { name: 'GRIST DASHBOARD UPDATED' })
+api.organizations.update(org_id, { name: "GRIST DASHBOARD UPDATED" })
 
 # Delete an organization
 # api.organizations.delete(org_id)
@@ -36,12 +37,12 @@ api.organizations.update(org_id, { name: 'GRIST DASHBOARD UPDATED' })
 # workspace = api.organizations.workspaces(org_id)
 #
 # Create a new workspace
-workspace = api.organizations.create_workspace(org_id, { name: 'GRIST WORKSPACE' })
+workspace = api.organizations.create_workspace(org_id, { name: "GRIST WORKSPACE" })
 ws_id = workspace.data if workspace.success?
 puts "Workspace ID 'ws_id' created ! "
 # Fetch all documents
 
-doc = api.documents.create({ workspaceId: ws_id, name: 'Grist new Document' })
+doc = api.documents.create({ workspaceId: ws_id, name: "Grist new Document" })
 
 # Download document as SQL
 puts api.documents.download_sql(doc.data).data

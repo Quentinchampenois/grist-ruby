@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Grist
   module Resources
     class Organization < Base
       def initialize(client)
-        super(client, 'orgs')
+        super(client, "orgs")
       end
 
       def access(org_id)
