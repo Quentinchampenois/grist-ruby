@@ -56,9 +56,6 @@ tables.each do |table|
   puts table.id
   puts "Total records : #{table.records.count}"
 end
-tables.last&.records({ limit: 10 })&.each do |record|
-  puts record.inspect
-end
 
 table = tables.last
 table.create_records("records" => [
