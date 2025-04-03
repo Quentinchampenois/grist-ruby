@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require "net/http"
+require "logger"
 require "json"
-require "byebug"
-require_relative "grist/api"
 require_relative "grist/version"
 require_relative "grist/rest"
 require_relative "grist/accessible"
@@ -13,20 +12,30 @@ require_relative "grist/types/doc"
 require_relative "grist/types/access"
 require_relative "grist/types/workspace"
 require_relative "grist/types/organization"
-require_relative "grist/client"
 require_relative "grist/response"
-require_relative "grist/resources/base"
-require_relative "grist/resources/organization"
-require_relative "grist/resources/document"
-require_relative "grist/resources/record"
-require_relative "grist/resources/table"
 
 module Grist
-  class APIError < StandardError; end
 
-  class Error < StandardError; end
+  class Error < StandardError
+    def self.help; end
+  end
 
-  class InvalidAPIKey < Error; end
+  class NetworkError < Error; end
+  class APIError < Error; end
+  class InvalidApiKey < APIError
+    def self.help
+      "help: Ensure the GRIST_API_KEY environment variable is set and valid."
+    end
+  end
+  class NotFound < APIError; end
+
+  def self.logger
+    @logger ||= Logger.new(STDOUT)
+  end
+
+  def self.logger=(logger)
+    @logger = logger
+  end
 
   def self.api_key
     ENV["GRIST_API_KEY"]
@@ -38,9 +47,7 @@ module Grist
 
   def self.base_api_url
     base_api_url = ENV["GRIST_API_URL"]
-    if base_api_url.nil? && base_api_url != "" && base_api_url.end_with?("/")
-      return base_api_url[0..-2]
-    end
+    return base_api_url[0..-2] if base_api_url.nil? && base_api_url != "" && base_api_url.end_with?("/")
 
     base_api_url
   end

@@ -16,18 +16,23 @@ module Grist
 
       response = http.request(request)
 
-      raise InvalidAPIKey if response.is_a?(Net::HTTPUnauthorized)
-      raise "Resource not found for '#{request.uri}'" if response.is_a?(Net::HTTPNotFound)
+      raise InvalidApiKey, "Invalid API key" if response.is_a?(Net::HTTPUnauthorized)
+      raise NotFound, "Resource not found at : #{request.uri}" if response.is_a?(Net::HTTPNotFound)
 
       data = JSON.parse(response.body)
 
       Grist::Response.new(data: data, code: response.code)
     rescue Net::OpenTimeout, Net::ReadTimeout, SocketError => e
-      Grist::Response.new(code: response&.code, error: "Grist endpoint is unreachable", type: e.class)
-    rescue InvalidAPIKey => e
-      Grist::Response.new(code: response&.code, error: "Unauthorized API key", type: e.class)
+      res = Grist::Response.new(code: response&.code, error: "Grist endpoint is unreachable at #{request.uri}", type: e.class)
+      res.log_error
+      raise NetworkError, res.print_error
+    rescue APIError => e
+      res = Grist::Response.new(code: response&.code, error: e.message, type: e.class)
+      res.log_error
+      raise APIError, res.print_error
     rescue StandardError => e
-      Grist::Response.new(code: response&.code, error: e.message, type: e.class)
+      res = Grist::Response.new(code: response&.code, error: e.message, type: e.class)
+      res.log_error
     end
 
     def path

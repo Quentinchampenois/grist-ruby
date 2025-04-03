@@ -22,5 +22,18 @@ module Grist
     def not_found?
       @code == 404
     end
+
+    def print_error
+      err = "#{@type}: #{@error}"
+      err += " (code: #{@code})" if @code
+      err += "\n#{@type.help}" if @type.respond_to?(:help) && !@type.help.nil?
+      err
+    end
+
+    def log_error
+      return unless error?
+
+      Grist.logger.error("Grist API Error: #{@type} (code: #{@code})- #{@error}")
+    end
   end
 end
