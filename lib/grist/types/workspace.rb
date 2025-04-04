@@ -3,10 +3,7 @@
 module Grist
   module Types
     # Defines a Grist Workspace
-    class Workspace
-      include Rest
-      include Accessible
-
+    class Workspace < Grist::Types::Base
       PATH = "/workspaces"
       KEYS = %w[
         id
@@ -24,29 +21,10 @@ module Grist
       attr_reader :org_id
 
       def initialize(params = {})
-        KEYS.each do |key|
-          instance_variable_set("@#{key}", params[key])
-        end
+        super params
         @org_id = params[:org_id]
         @docs = []
       end
-
-      # def docs
-      #   grist_res = request(:get, create_doc_path)
-      #   return [] unless grist_res.success? && grist_res.data
-      #
-      #   @docs = grist_res.data.map do |doc|
-      #     doc["id"] = doc["urlId"]
-      #     doc.transform_keys!(&:to_s)
-      #     doc["workspace_id"] = @id
-      #     doc["org_id"] = @org_id
-      #     doc["owner"] = @owner
-      #     doc["access"] = @access
-      #     doc["createdAt"] = Time.parse(doc["createdAt"])
-      #     doc["updatedAt"] = Time.parse(doc["updatedAt"])
-      #     Doc.new(doc)
-      #   end
-      # end
 
       def deleted?
         @deleted ||= false
@@ -78,10 +56,6 @@ module Grist
 
         doc
       end
-
-      # def base_api_url
-      #   "#{ENV["GRIST_API_URL"]}/api/orgs/#{@org_id}"
-      # end
 
       # Creates the workspace
       # # @param id [Integer] The ID of the workspace to create
@@ -116,30 +90,20 @@ module Grist
       # # # @param data [Hash] The data to update the workspace with
       # # @return [self | nil] The updated workspace or nil if not found
       def self.update(id, data)
-        org = find(id)
-        return unless org
+        obj = find(id)
+        return unless obj
 
-        org.update(data)
+        obj.update(data)
       end
 
       # Deletes the workspace
       # # @param id [Integer] The ID of the workspace to delete
       # # @return [self | nil] The deleted workspace or nil if not found
       def self.delete(id)
-        org = find(id)
-        return unless org
+        obj = find(id)
+        return unless obj
 
-        org.delete
-      end
-
-      def self.access(id)
-        org = find(id)
-        grist_res = org.access
-        return unless grist_res.success? && grist_res.data
-
-        grist_res.data["users"].map do |access|
-          Access.new(access)
-        end
+        obj.delete
       end
     end
   end

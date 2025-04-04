@@ -3,9 +3,7 @@
 module Grist
   module Types
     # Defines a Grist Organization
-    class Access
-      include Rest
-
+    class Access < Grist::Types::Base
       PATH = "/access"
       KEYS = %w[
         id
@@ -18,16 +16,6 @@ module Grist
       ].freeze
 
       attr_accessor(*KEYS)
-
-      def initialize(params = {})
-        KEYS.each do |key|
-          instance_variable_set("@#{key}", params[key])
-        end
-      end
-
-      def deleted?
-        @deleted ||= false
-      end
 
       # List all organizations
       # # # @return [Array] Array of organizations

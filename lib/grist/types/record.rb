@@ -3,9 +3,7 @@
 module Grist
   module Types
     # Defines a Grist Workspace
-    class Record
-      include Rest
-
+    class Record < Grist::Types::Base
       PATH = "/records"
       KEYS = %w[
         id
@@ -15,9 +13,7 @@ module Grist
       attr_accessor(*KEYS)
 
       def initialize(params = {})
-        KEYS.each do |key|
-          instance_variable_set("@#{key}", params[key])
-        end
+        super params
         @table_id = params[:table_id]
         @doc_id = params[:doc_id]
       end

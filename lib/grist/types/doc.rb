@@ -3,10 +3,7 @@
 module Grist
   module Types
     # Defines a Grist Workspace
-    class Doc
-      include Rest
-      include Accessible
-
+    class Doc < Grist::Types::Base
       PATH = "/docs"
       KEYS = %w[
         name
@@ -24,15 +21,9 @@ module Grist
       attr_accessor(*KEYS)
 
       def initialize(params = {})
-        KEYS.each do |key|
-          instance_variable_set("@#{key}", params[key])
-        end
+        super params
         @ws_id = params[:ws_id]
         @tables = []
-      end
-
-      def deleted?
-        @deleted ||= false
       end
 
       def tables_path

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # spec/grist/rest_spec.rb
 
-require 'rspec'
-require 'net/http'
-require 'json'
+require "rspec"
+require "net/http"
+require "json"
 
 RSpec.describe Grist::Rest do
   let(:subject) { klass.new }
@@ -10,13 +12,13 @@ RSpec.describe Grist::Rest do
     Class.new do
       include Grist::Rest
 
-      PATH = '/test_path'
+      PATH = "/test_path"
     end
   end
-  let(:base_api_url) { 'http://localhost:3000' }
-  let(:api_key) { 'test_api_key' }
-  let(:endpoint) { '/api' }
-  let(:params) { { key: 'value' } }
+  let(:base_api_url) { "http://localhost:3000" }
+  let(:api_key) { "test_api_key" }
+  let(:endpoint) { "/api" }
+  let(:params) { { key: "value" } }
   let(:http_request) do
     instance_double(Net::HTTP, request: response, "use_ssl=" => false)
   end
@@ -29,8 +31,8 @@ RSpec.describe Grist::Rest do
     allow(subject).to receive(:path).and_return(endpoint)
   end
 
-  describe '#request' do
-    it 'sends a GET request with query parameters' do
+  describe "#request" do
+    it "sends a GET request with query parameters" do
       allow(Net::HTTP).to receive(:new).and_return(http_request)
       allow_any_instance_of(Net::HTTP).to receive(:use_ssl=)
 
@@ -41,7 +43,7 @@ RSpec.describe Grist::Rest do
       expect(result.code).to eq(200)
     end
 
-    it 'sends a POST request with JSON body' do
+    it "sends a POST request with JSON body" do
       allow(Net::HTTP).to receive(:new).and_return(http_request)
       allow_any_instance_of(Net::HTTP).to receive(:use_ssl=)
 

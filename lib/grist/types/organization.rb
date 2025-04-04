@@ -3,10 +3,7 @@
 module Grist
   module Types
     # Defines a Grist Organization
-    class Organization
-      include Rest
-      include Accessible
-
+    class Organization < Grist::Types::Base
       PATH = "/orgs"
       KEYS = %w[
         id
@@ -22,9 +19,8 @@ module Grist
       attr_reader :workspaces
 
       def initialize(params = {})
-        KEYS.each do |key|
-          instance_variable_set("@#{key}", params[key])
-        end
+        super params
+        @workspaces = []
       end
 
       def deleted?
