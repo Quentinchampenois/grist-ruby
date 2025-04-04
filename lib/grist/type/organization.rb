@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Grist
-  module Types
+  module Type
     # Defines a Grist Organization
-    class Organization < Grist::Types::Base
+    class Organization < Grist::Type::Base
       PATH = "/orgs"
       KEYS = %w[
         id
@@ -28,7 +28,7 @@ module Grist
       end
 
       # List Workspaces in the organization
-      # # # @return [Array | nil] The workspaces array
+      # @return [Array | nil] The workspaces array
       # @note API: https://support.getgrist.com/api/#tag/workspaces
       def list_workspaces
         grist_res = request(:get, workspaces_path)
@@ -40,8 +40,8 @@ module Grist
       end
 
       # Create a new Workspace in the organization
-      # # @param data [Hash] The data to create the workspace with
-      # # # @return [self | nil] The organization or nil if not found
+      # @param data [Hash] The data to create the workspace with
+      # @return [self | nil] The organization or nil if not found
       def create_workspace(data)
         grist_res = request(:post, workspaces_path, data)
 
@@ -65,17 +65,19 @@ module Grist
       end
 
       # List all organizations
-      # # # @return [Array] Array of organizations
+      # @return [Array] Array of organizations
       def self.all
         grist_res = new.list
-        return [] unless grist_res&.data.is_a?(Array)
 
-        grist_res.data&.map { |org| Organization.new(org) }
+        return [] unless grist_res&.data.is_a?(Array)
+        return [] unless grist_res&.data&.any?
+
+        grist_res.data.map { |org| Organization.new(org) }
       end
 
       # Finds an organization by ID
-      # # @param id [Integer] The ID of the organization to find
-      # # # return [self | nil] The organization or nil if not found
+      # @param id [Integer] The ID of the organization to find
+      # return [Organization, nil] The organization or nil if not found
       def self.find(id)
         grist_res = new.get(id)
         return unless grist_res.success? && grist_res.data
@@ -84,9 +86,9 @@ module Grist
       end
 
       # Updates the organization
-      # # @param id [Integer] The ID of the organization to delete
-      # # # @param data [Hash] The data to update the organization with
-      # # @return [self | nil] The updated organization or nil if not found
+      # @param id [Integer] The ID of the organization to delete
+      # @param data [Hash] The data to update the organization with
+      # @return [self | nil] The updated organization or nil if not found
       def self.update(id, data)
         org = find(id)
         return unless org
@@ -95,8 +97,8 @@ module Grist
       end
 
       # Deletes the organization
-      # # @param id [Integer] The ID of the organization to delete
-      # # @return [self | nil] The deleted organization or nil if not found
+      # @param id [Integer] The ID of the organization to delete
+      # @return [self | nil] The deleted organization or nil if not found
       def self.delete(id)
         org = find(id)
         return unless org

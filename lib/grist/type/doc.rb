@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Grist
-  module Types
+  module Type
     # Defines a Grist Workspace
-    class Doc < Grist::Types::Base
+    class Doc < Grist::Type::Base
       PATH = "/docs"
       KEYS = %w[
         name

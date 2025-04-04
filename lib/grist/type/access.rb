@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Grist
-  module Types
+  module Type
     # Defines a Grist Organization
-    class Access < Grist::Types::Base
+    class Access < Grist::Type::Base
       PATH = "/access"
       KEYS = %w[
         id
@@ -18,7 +18,7 @@ module Grist
       attr_accessor(*KEYS)
 
       # List all organizations
-      # # # @return [Array] Array of organizations
+      # @return [Array] Array of organizations
       def self.all
         grist_res = new.list
         return [] unless grist_res&.data.is_a?(Array)
@@ -27,8 +27,8 @@ module Grist
       end
 
       # Finds an organization by ID
-      # # @param id [Integer] The ID of the organization to find
-      # # # return [self | nil] The organization or nil if not found
+      # @param id [Integer] The ID of the organization to find
+      # return [self | nil] The organization or nil if not found
       def self.find(id)
         grist_res = new.get(id)
         return unless grist_res.success? && grist_res.data
@@ -37,9 +37,9 @@ module Grist
       end
 
       # Updates the organization
-      # # @param id [Integer] The ID of the organization to delete
-      # # # @param data [Hash] The data to update the organization with
-      # # @return [self | nil] The updated organization or nil if not found
+      # @param id [Integer] The ID of the organization to delete
+      # @param data [Hash] The data to update the organization with
+      # @return [self | nil] The updated organization or nil if not found
       def self.update(id, data)
         org = find(id)
         return unless org
@@ -48,8 +48,8 @@ module Grist
       end
 
       # Deletes the organization
-      # # @param id [Integer] The ID of the organization to delete
-      # # @return [self | nil] The deleted organization or nil if not found
+      # @param id [Integer] The ID of the organization to delete
+      # @return [self | nil] The deleted organization or nil if not found
       def self.delete(id)
         org = find(id)
         return unless org

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Grist
-  module Types
+  module Type
     # Defines a Grist Workspace
-    class Table < Grist::Types::Base
+    class Table < Grist::Type::Base
       KEYS = %w[
         id
         fields

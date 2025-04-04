@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Grist
-  module Types
+  module Type
     # Defines a Grist Workspace
-    class Workspace < Grist::Types::Base
+    class Workspace < Grist::Type::Base
       PATH = "/workspaces"
       KEYS = %w[
         id
@@ -62,7 +62,7 @@ module Grist
       # # # @param data [Hash] The data to create the workspace with
       # # @return [self | nil] The created workspace or nil if not found
       def self.create(org_id, data)
-        org = Types::Organization.find(org_id)
+        org = Type::Organization.find(org_id)
         org.create_workspace(data)
       end
 

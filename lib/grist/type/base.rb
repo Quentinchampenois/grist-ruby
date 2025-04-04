@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Grist
-  module Types
+  module Type
     class Base
       include Rest
       include Accessible

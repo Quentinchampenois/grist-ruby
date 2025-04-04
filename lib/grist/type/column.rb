@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 module Grist
-  module Types
+  module Type
     # Defines a Grist Workspace
-    class Record < Grist::Types::Base
-      PATH = "/records"
+    class Column
+      include Rest
+
+      PATH = "/docs"
       KEYS = %w[
         id
         fields
@@ -13,9 +15,10 @@ module Grist
       attr_accessor(*KEYS)
 
       def initialize(params = {})
-        super params
-        @table_id = params[:table_id]
         @doc_id = params[:doc_id]
+        KEYS.each do |key|
+          instance_variable_set("@#{key}", params[key])
+        end
       end
     end
   end

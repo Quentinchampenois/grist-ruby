@@ -34,6 +34,7 @@ module Grist
     rescue StandardError => e
       res = Grist::Response.new(code: response&.code, error: e.message, type: e.class)
       res.log_error
+      res
     end
 
     def path

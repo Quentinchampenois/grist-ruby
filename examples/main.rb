@@ -10,12 +10,12 @@ raise ArgumentError, "You must provide env var : 'GRIST_API_URL'" if ENV.fetch("
 
 # Grist::API.new(api_key: ENV["GRIST_API_KEY"], base_url: ENV["GRIST_API_URL"])
 
-orgs = Grist::Types::Organization.all
+orgs = Grist::Type::Organization.all
 org = orgs.last
 puts "Org: #{org.name} - ID: #{org.id}"
 ws = org.create_workspace({ name: "Workspace N°#{rand(1_000)}" })
-# Grist::Types::Organization.access(orgs.last.id)
-# Grist::Types::Workspace.create(orgs.last.id, { name: "Hello WS #{rand(1_000)}" })
+# Grist::Type::Organization.access(orgs.last.id)
+# Grist::Type::Workspace.create(orgs.last.id, { name: "Hello WS #{rand(1_000)}" })
 
 doc = ws.create_doc({
                       name: "Decidim",
