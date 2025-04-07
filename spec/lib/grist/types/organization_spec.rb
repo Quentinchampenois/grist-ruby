@@ -104,4 +104,58 @@ RSpec.describe Grist::Type::Organization do
       expect(got.first.name).to eq("Andrea")
     end
   end
+
+  describe "#create_workspace" do
+    let(:body) { "100" }
+    before do
+      stub_request(:post, "http://localhost:8484/orgs/42/workspaces").to_return(status: 200,
+                                                                                body: body)
+    end
+
+    it "creates a new workspace in the organization" do
+      got = described_class.create_workspace(42, { name: "New workspace" })
+      expect(got).to be_a(Grist::Type::Workspace)
+      expect(got.id).to eq(100)
+    end
+  end
+
+  describe "#list_workspaces" do
+    let(:workspaces) do
+      [
+        {
+          "id": 42,
+          "name": "Secret Plans",
+          "access": "owners",
+          "docs": [
+            {
+              "id": 145,
+              "name": "Project Lollipop",
+              "access": "owners",
+              "isPinned": true,
+              "urlId": "null"
+            }
+          ],
+          "orgDomain": "gristlabs"
+        }
+      ]
+    end
+    before do
+      stub_request(:get, "http://localhost:8484/orgs/42/workspaces").to_return(status: 200,
+                                                                               body: workspaces.to_json)
+    end
+
+    it "returns an array of workspaces" do
+      got = described_class.list_workspaces(42)
+      expect(got).to be_an(Array)
+      expect(got.first).to be_a(Grist::Type::Workspace)
+      expect(got.first.id).to eq(42)
+    end
+  end
+
+  describe "#workspaces_path" do
+    it "returns the correct path" do
+      org = described_class.new("id" => 42)
+      expect(org.workspaces_path).to eq("/orgs/42/workspaces")
+    end
+  end
 end
