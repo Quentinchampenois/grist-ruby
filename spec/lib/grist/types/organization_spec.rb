@@ -23,9 +23,20 @@ RSpec.describe Grist::Type::Organization do
       }
     ]
   end
+  let(:users) do
+    [
+      {
+        "id" => 100,
+        "name" => "Andrea",
+        "email" => "andrea@grist.com",
+        "access" => "owners"
+      }
+    ]
+  end
 
   before do
     stub_request(:get, "http://localhost:8484/orgs").to_return(status: 200, body: response.to_json, headers: {})
+    stub_request(:get, "http://localhost:8484/orgs/42").to_return(status: 200, body: response.first.to_json, headers: {})
   end
 
   describe "#all" do
@@ -58,12 +69,22 @@ RSpec.describe Grist::Type::Organization do
 
   describe "#update" do
     it "updates and returns a new instance of Organization" do
-      stub_request(:get, "http://localhost:8484/orgs/42").to_return(status: 200, body: response.first.to_json,
-                                                                                                                                  headers: {})
       stub_request(:patch, "http://localhost:8484/orgs/42").to_return(status: 200, body: response.first.merge("name" => "Grist Updated!").to_json)
       got = described_class.update(42, { name: "Grist Updated!" })
       expect(got).to be_a(Grist::Type::Organization)
       expect(got.name).to eq("Grist Updated!")
+    end
+  end
+
+  describe "#access" do
+    before do
+      stub_request(:get, "http://localhost:8484/orgs/42/access").to_return(status: 200, body: { "users" => users}.to_json)
+    end
+
+    it "returns the access of the organization" do
+      got = described_class.access(42)
+      expect(got).to be_a(Array)
+      expect(got.first).to be_a(Grist::Type::Access)
     end
   end
 end

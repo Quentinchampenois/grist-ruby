@@ -88,7 +88,7 @@ module Grist
       # Updates the organization
       # @param id [Integer] The ID of the organization to delete
       # @param data [Hash] The data to update the organization with
-      # @return [self | nil] The updated organization or nil if not found
+      # @return [Organization, nil] The updated organization or nil if not found
       def self.update(id, data)
         org = find(id)
         return unless org
@@ -106,6 +106,9 @@ module Grist
         org.delete
       end
 
+      # Get users which can access to the organization
+      # @param id [Integer] The ID of the organization
+      # @return [Array, nil] An array of Grist::Type::Access or nil
       def self.access(id)
         org = find(id)
         grist_res = org.access
