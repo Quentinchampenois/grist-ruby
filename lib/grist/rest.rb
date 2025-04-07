@@ -19,7 +19,7 @@ module Grist
       raise InvalidApiKey, "Invalid API key" if response.is_a?(Net::HTTPUnauthorized)
       raise NotFound, "Resource not found at : #{request.uri}" if response.is_a?(Net::HTTPNotFound)
 
-      data = JSON.parse(response.body)
+      data = response_body(response.body)
 
       Grist::Response.new(data: data, code: response.code)
     rescue Net::OpenTimeout, Net::ReadTimeout, SocketError => e
@@ -82,6 +82,14 @@ module Grist
       instance_variable_set("@deleted", true)
 
       self
+    end
+
+    private
+
+    def response_body(str)
+      return {} if str.nil? || str.empty?
+
+      JSON.parse(str)
     end
   end
 end

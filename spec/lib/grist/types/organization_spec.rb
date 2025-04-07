@@ -28,7 +28,7 @@ RSpec.describe Grist::Type::Organization do
       {
         "id" => 100,
         "name" => "Andrea",
-        "email" => "andrea@grist.com",
+        "email" => "andrea@example.org",
         "access" => "owners"
       }
     ]
@@ -36,7 +36,8 @@ RSpec.describe Grist::Type::Organization do
 
   before do
     stub_request(:get, "http://localhost:8484/orgs").to_return(status: 200, body: response.to_json, headers: {})
-    stub_request(:get, "http://localhost:8484/orgs/42").to_return(status: 200, body: response.first.to_json, headers: {})
+    stub_request(:get, "http://localhost:8484/orgs/42").to_return(status: 200, body: response.first.to_json,
+                                                                  headers: {})
   end
 
   describe "#all" do
@@ -68,23 +69,39 @@ RSpec.describe Grist::Type::Organization do
   end
 
   describe "#update" do
+    let(:body) { response.first.merge("name" => "Grist Updated!") }
     it "updates and returns a new instance of Organization" do
-      stub_request(:patch, "http://localhost:8484/orgs/42").to_return(status: 200, body: response.first.merge("name" => "Grist Updated!").to_json)
+      stub_request(:patch, "http://localhost:8484/orgs/42").to_return(status: 200,
+                                                                      body: body.to_json)
       got = described_class.update(42, { name: "Grist Updated!" })
       expect(got).to be_a(Grist::Type::Organization)
       expect(got.name).to eq("Grist Updated!")
     end
   end
 
+  describe "#delete" do
+    before do
+      stub_request(:delete, "http://localhost:8484/orgs/42").to_return(status: 200)
+    end
+
+    it "deletes an organization" do
+      got = described_class.delete(42)
+      expect(got).to be_a(Grist::Type::Organization)
+      expect(got.deleted?).to be_truthy
+    end
+  end
+
   describe "#access" do
     before do
-      stub_request(:get, "http://localhost:8484/orgs/42/access").to_return(status: 200, body: { "users" => users}.to_json)
+      stub_request(:get, "http://localhost:8484/orgs/42/access").to_return(status: 200,
+                                                                           body: { "users" => users }.to_json)
     end
 
     it "returns the access of the organization" do
       got = described_class.access(42)
       expect(got).to be_a(Array)
       expect(got.first).to be_a(Grist::Type::Access)
+      expect(got.first.name).to eq("Andrea")
     end
   end
 end

@@ -23,10 +23,6 @@ module Grist
         @workspaces = []
       end
 
-      def deleted?
-        @deleted ||= false
-      end
-
       # List Workspaces in the organization
       # @return [Array | nil] The workspaces array
       # @note API: https://support.getgrist.com/api/#tag/workspaces
@@ -77,7 +73,7 @@ module Grist
 
       # Finds an organization by ID
       # @param id [Integer] The ID of the organization to find
-      # return [Organization, nil] The organization or nil if not found
+      # return [Grist::Type::Organization, nil] The organization or nil if not found
       def self.find(id)
         grist_res = new.get(id)
         return unless grist_res.success? && grist_res.data
@@ -88,7 +84,7 @@ module Grist
       # Updates the organization
       # @param id [Integer] The ID of the organization to delete
       # @param data [Hash] The data to update the organization with
-      # @return [Organization, nil] The updated organization or nil if not found
+      # @return [Grist::Type::Organization, nil] The updated organization or nil if not found
       def self.update(id, data)
         org = find(id)
         return unless org
@@ -98,7 +94,7 @@ module Grist
 
       # Deletes the organization
       # @param id [Integer] The ID of the organization to delete
-      # @return [self | nil] The deleted organization or nil if not found
+      # @return [Grist::Type::Organization, nil] The deleted organization or nil if not found
       def self.delete(id)
         org = find(id)
         return unless org

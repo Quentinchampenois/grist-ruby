@@ -21,6 +21,10 @@ module Grist
       def keys
         self.class::KEYS
       end
+
+      def deleted?
+        !!@deleted
+      end
     end
   end
 end
