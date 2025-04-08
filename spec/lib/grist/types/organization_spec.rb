@@ -33,6 +33,25 @@ RSpec.describe Grist::Type::Organization do
       }
     ]
   end
+  let(:workspaces) do
+    [
+      {
+        "id": 42,
+        "name": "Secret Plans",
+        "access": "owners",
+        "docs": [
+          {
+            "id": 145,
+            "name": "Project Lollipop",
+            "access": "owners",
+            "isPinned": true,
+            "urlId": "null"
+          }
+        ],
+        "orgDomain": "gristlabs"
+      }
+    ]
+  end
 
   before do
     stub_request(:get, "http://localhost:8484/api/orgs").to_return(status: 200, body: response.to_json, headers: {})
@@ -120,25 +139,6 @@ RSpec.describe Grist::Type::Organization do
   end
 
   describe "#list_workspaces" do
-    let(:workspaces) do
-      [
-        {
-          "id": 42,
-          "name": "Secret Plans",
-          "access": "owners",
-          "docs": [
-            {
-              "id": 145,
-              "name": "Project Lollipop",
-              "access": "owners",
-              "isPinned": true,
-              "urlId": "null"
-            }
-          ],
-          "orgDomain": "gristlabs"
-        }
-      ]
-    end
     before do
       stub_request(:get, "http://localhost:8484/api/orgs/42/workspaces").to_return(status: 200,
                                                                                    body: workspaces.to_json)
@@ -156,6 +156,21 @@ RSpec.describe Grist::Type::Organization do
     it "returns the correct path" do
       org = described_class.new("id" => 42)
       expect(org.workspaces_path).to eq("/orgs/42/workspaces")
+    end
+  end
+
+  describe "#workspaces" do
+    before do
+      stub_request(:get, "http://localhost:8484/api/orgs/42/workspaces").to_return(status: 200,
+                                                                                   body: workspaces.to_json)
+    end
+
+    it "returns an array of workspaces" do
+      org = described_class.find(42)
+      got = org.workspaces
+      expect(got).to be_an(Array)
+      expect(got.first).to be_a(Grist::Type::Workspace)
+      expect(got.first.id).to eq(42)
     end
   end
 end

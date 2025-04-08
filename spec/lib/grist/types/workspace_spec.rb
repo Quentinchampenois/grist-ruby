@@ -124,7 +124,7 @@ RSpec.describe Grist::Type::Workspace do
     end
 
     it "uses create_doc_path to create a new doc" do
-      got = subject.create_doc_path
+      got = subject.send(:create_doc_path)
       expect(got).to eq("/workspaces/#{id}/docs")
     end
   end

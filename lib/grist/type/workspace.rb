@@ -26,15 +26,9 @@ module Grist
         @docs = []
       end
 
-      # @note Method to create a new doc in workspace
-      # @note API: https://support.getgrist.com/api/#tag/docs/operation/createDoc
-      def create_doc_path
-        "/workspaces/#{@id}/docs"
-      end
-
       # Create a new Doc in the workspace
       # @param data [Hash] The data to create the doc with
-      # @return [self | nil] The created doc or nil if not found
+      # @return [Grist::Type::Doc, nil] The created doc or nil if not found
       def create_doc(data)
         grist_res = request(:post, create_doc_path, data)
 
@@ -67,6 +61,14 @@ module Grist
         return [] unless grist_res&.data&.any?
 
         grist_res.data.map { |org| Workspace.new(org) }
+      end
+
+      private
+
+      # @note Method to create a new doc in workspace
+      # @note API: https://support.getgrist.com/api/#tag/docs/operation/createDoc
+      def create_doc_path
+        "/workspaces/#{@id}/docs"
       end
     end
   end

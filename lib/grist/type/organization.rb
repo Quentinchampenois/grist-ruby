@@ -35,14 +35,14 @@ module Grist
       end
 
       # List Workspaces in the organization
-      # @return [Array | nil] The workspaces array
+      # @return [Array] The array of Grist::Type::Workspace
       # @note API: https://support.getgrist.com/api/#tag/workspaces
-      def list_workspaces
+      def workspaces
         grist_res = request(:get, workspaces_path)
 
         return [] unless grist_res.success? && grist_res.data
 
-        grist_res.data.map do |workspace|
+        @workspaces = grist_res.data.map do |workspace|
           Workspace.new(workspace)
         end
       end
@@ -93,7 +93,7 @@ module Grist
         org = find(id)
         return [] unless org
 
-        org.list_workspaces
+        org.workspaces
       end
 
       # Create a new workspace in the organization
