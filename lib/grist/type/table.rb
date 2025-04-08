@@ -7,13 +7,22 @@ module Grist
       KEYS = %w[
         id
         fields
+        columns
       ].freeze
 
       attr_accessor(*KEYS)
 
       def initialize(params = {})
-        super params
         @doc_id = params[:doc_id]
+        super params
+      end
+
+      def to_hash
+        {
+          "id" => @id,
+          "fields" => @fields,
+          "columns" => @columns
+        }
       end
 
       def columns_path

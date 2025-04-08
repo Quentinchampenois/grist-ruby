@@ -21,22 +21,35 @@ module Grist
       attr_reader :org_id
 
       def initialize(params = {})
-        super params
         @org_id = params[:org_id]
         @docs = []
+        super params
+      end
+
+      def docs
+        return @docs if @docs&.any? && @docs.first.is_a?(Doc)
+
+        if @docs.any? && @docs.first.is_a?(Hash)
+          @docs = @docs.map do |doc|
+            Doc.new(doc.merge(ws_id: @id))
+          end
+        end
+
+        @docs
       end
 
       # Create a new Doc in the workspace
       # @param data [Hash] The data to create the doc with
       # @return [Grist::Type::Doc, nil] The created doc or nil if not found
       def create_doc(data)
-        grist_res = request(:post, create_doc_path, data)
+        grist_res = request(:post, doc_path, data)
 
         return unless grist_res.success?
 
         data["id"] = grist_res.data
         data.transform_keys!(&:to_s)
         doc = Doc.new(data)
+        @docs ||= []
         @docs << doc
 
         doc
@@ -67,7 +80,7 @@ module Grist
 
       # @note Method to create a new doc in workspace
       # @note API: https://support.getgrist.com/api/#tag/docs/operation/createDoc
-      def create_doc_path
+      def doc_path
         "/workspaces/#{@id}/docs"
       end
     end

@@ -8,6 +8,8 @@ require "byebug"
 raise ArgumentError, "You must provide env var : 'GRIST_API_KEY'" if ENV.fetch("GRIST_API_KEY", "").empty?
 raise ArgumentError, "You must provide env var : 'GRIST_API_URL'" if ENV.fetch("GRIST_API_URL", "").empty?
 
+TABLE_NAME = "Open_source_software"
+
 org_name = ENV.fetch("GRIST_ORG_NAME", "")
 orgs = Grist::Type::Organization.all
 org = orgs.find { |org| org.name == org_name }
@@ -36,15 +38,19 @@ end
 puts "Doc ID: #{doc.id}"
 puts "Doc Name: #{doc.name}"
 
-if doc.tables.empty?
-  puts "No tables found in doc #{doc.name}. Creating a new one..."
-  table = doc.create_tables({ name: "Open source software" })
-  puts "Table created ID: #{table.id}"
+table = doc.tables.find { |t| t.id == TABLE_NAME }
+if !table.nil?
+  puts "Table found in doc #{doc.name}. Using the last one '#{table.id}'..."
+  puts "Table ID: #{table.id}"
 else
-  table = doc.tables.last
-  puts "Tables found in doc #{doc.name}. Using the last one '#{table.id}'..."
+  puts "No tables found in doc #{doc.name}. Creating a new one..."
+  new_table = Grist::Type::Table.new("id" => TABLE_NAME, "columns" => [
+                                       { "id" => "name", "fields" => { "label" => "Software name" } },
+                                       { "id" => "description", "fields" => { "label" => "Description" } },
+                                       { "id" => "link", "fields" => { "label" => "Source code link" } }
+                                     ])
+  table = doc.create_tables("tables" => [new_table.to_hash])[0]
+  puts "Table created ID: #{table&.id}"
 end
 
 # TODO: WIP
-
-exit 0
