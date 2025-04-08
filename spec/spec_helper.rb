@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require "bundler/setup"
-require "grist/client"
+require "webmock/rspec"
+require "grist"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
