@@ -37,15 +37,22 @@ module Grist
         @tables = grist_res.data["tables"]&.map do |t|
           Table.new(t.merge(doc_id: @id, ws_id: @ws_id))
         end
-        @tables
       end
 
       def create_tables(data)
         grist_res = request(:post, tables_path, data)
-        puts grist_res.inspect
+
         return [] unless grist_res&.data.is_a?(Array)
 
-        @tables = grist_res.data&.map { |org| Table.new(org) }
+        tables
+      end
+
+      def update_table(data)
+        grist_res = request(:patch, tables_path, data)
+
+        return [] unless grist_res&.data.is_a?(Array)
+
+        tables
       end
 
       # def base_api_url
