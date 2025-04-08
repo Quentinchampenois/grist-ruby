@@ -8,6 +8,10 @@ on:
 
   pull_request:
 
+env:
+  GRIST_API_URL: ""
+  GRIST_API_KEY: ""
+
 jobs:
   build:
     runs-on: ubuntu-latest
