@@ -9,7 +9,7 @@ on:
   pull_request:
 
 env:
-  GRIST_API_URL: "http://example.localhost"
+  GRIST_API_URL: "http://localhost:8484"
   GRIST_API_KEY: "abc"
 
 jobs:
