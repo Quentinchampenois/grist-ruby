@@ -35,9 +35,9 @@ RSpec.describe Grist::Type::Organization do
   end
 
   before do
-    stub_request(:get, "http://localhost:8484/orgs").to_return(status: 200, body: response.to_json, headers: {})
-    stub_request(:get, "http://localhost:8484/orgs/42").to_return(status: 200, body: response.first.to_json,
-                                                                  headers: {})
+    stub_request(:get, "http://localhost:8484/api/orgs").to_return(status: 200, body: response.to_json, headers: {})
+    stub_request(:get, "http://localhost:8484/api/orgs/42").to_return(status: 200, body: response.first.to_json,
+                                                                      headers: {})
   end
 
   describe "#all" do
@@ -49,7 +49,7 @@ RSpec.describe Grist::Type::Organization do
     end
 
     it "returns an empty array if the request fails" do
-      stub_request(:get, "http://localhost:8484/orgs").to_return(status: 500)
+      stub_request(:get, "http://localhost:8484/api/orgs").to_return(status: 500)
       expect(described_class.all).to be_an(Array)
       expect(described_class.all).to be_empty
     end
@@ -57,8 +57,8 @@ RSpec.describe Grist::Type::Organization do
 
   describe "#find" do
     before do
-      stub_request(:get, "http://localhost:8484/orgs/42").to_return(status: 200, body: response.first.to_json,
-                                                                    headers: {})
+      stub_request(:get, "http://localhost:8484/api/orgs/42").to_return(status: 200, body: response.first.to_json,
+                                                                        headers: {})
     end
 
     it "returns an instance of Organization" do
@@ -71,8 +71,8 @@ RSpec.describe Grist::Type::Organization do
   describe "#update" do
     let(:body) { response.first.merge("name" => "Grist Updated!") }
     it "updates and returns a new instance of Organization" do
-      stub_request(:patch, "http://localhost:8484/orgs/42").to_return(status: 200,
-                                                                      body: body.to_json)
+      stub_request(:patch, "http://localhost:8484/api/orgs/42").to_return(status: 200,
+                                                                          body: body.to_json)
       got = described_class.update(42, { name: "Grist Updated!" })
       expect(got).to be_a(Grist::Type::Organization)
       expect(got.name).to eq("Grist Updated!")
@@ -81,7 +81,7 @@ RSpec.describe Grist::Type::Organization do
 
   describe "#delete" do
     before do
-      stub_request(:delete, "http://localhost:8484/orgs/42").to_return(status: 200)
+      stub_request(:delete, "http://localhost:8484/api/orgs/42").to_return(status: 200)
     end
 
     it "deletes an organization" do
@@ -93,8 +93,8 @@ RSpec.describe Grist::Type::Organization do
 
   describe "#access" do
     before do
-      stub_request(:get, "http://localhost:8484/orgs/42/access").to_return(status: 200,
-                                                                           body: { "users" => users }.to_json)
+      stub_request(:get, "http://localhost:8484/api/orgs/42/access").to_return(status: 200,
+                                                                               body: { "users" => users }.to_json)
     end
 
     it "returns the access of the organization" do
@@ -108,8 +108,8 @@ RSpec.describe Grist::Type::Organization do
   describe "#create_workspace" do
     let(:body) { "100" }
     before do
-      stub_request(:post, "http://localhost:8484/orgs/42/workspaces").to_return(status: 200,
-                                                                                body: body)
+      stub_request(:post, "http://localhost:8484/api/orgs/42/workspaces").to_return(status: 200,
+                                                                                    body: body)
     end
 
     it "creates a new workspace in the organization" do
@@ -140,8 +140,8 @@ RSpec.describe Grist::Type::Organization do
       ]
     end
     before do
-      stub_request(:get, "http://localhost:8484/orgs/42/workspaces").to_return(status: 200,
-                                                                               body: workspaces.to_json)
+      stub_request(:get, "http://localhost:8484/api/orgs/42/workspaces").to_return(status: 200,
+                                                                                   body: workspaces.to_json)
     end
 
     it "returns an array of workspaces" do

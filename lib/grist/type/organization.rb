@@ -73,48 +73,6 @@ module Grist
         "#{path}/#{@id}/workspaces"
       end
 
-      # List all organizations
-      # @return [Array] Array of organizations
-      def self.all
-        grist_res = new.list
-
-        return [] unless grist_res&.data.is_a?(Array)
-        return [] unless grist_res&.data&.any?
-
-        grist_res.data.map { |org| Organization.new(org) }
-      end
-
-      # Finds an organization by ID
-      # @param id [Integer] The ID of the organization to find
-      # return [Grist::Type::Organization, nil] The organization or nil if not found
-      def self.find(id)
-        grist_res = new.get(id)
-        return unless grist_res.success? && grist_res.data
-
-        new(grist_res.data)
-      end
-
-      # Updates the organization
-      # @param id [Integer] The ID of the organization to delete
-      # @param data [Hash] The data to update the organization with
-      # @return [Grist::Type::Organization, nil] The updated organization or nil if not found
-      def self.update(id, data)
-        org = find(id)
-        return unless org
-
-        org.update(data)
-      end
-
-      # Deletes the organization
-      # @param id [Integer] The ID of the organization to delete
-      # @return [Grist::Type::Organization, nil] The deleted organization or nil if not found
-      def self.delete(id)
-        org = find(id)
-        return unless org
-
-        org.delete
-      end
-
       # Get users which can access to the organization
       # @param id [Integer] The ID of the organization
       # @return [Array, nil] An array of Grist::Type::Access or nil
