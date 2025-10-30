@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    grist-grist (0.1.0)
+    grist (0.1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -63,11 +63,12 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  arm64-darwin-25
   x86_64-linux
 
 DEPENDENCIES
   byebug (~> 11.1)
-  grist-grist!
+  grist!
   rake (~> 13.0)
   rspec (~> 3.0)
   rubocop (~> 1.21)

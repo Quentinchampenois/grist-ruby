@@ -2,7 +2,7 @@
 
 module Grist
   module ApiRoutes
-    ### ORGANIATIONS
+    ### ORGANIZATIONS
     ORG_ALL = "https://{gristhost}/api/orgs"
     ORG_FIND = "https://{gristhost}/api/orgs/{orgId}"
     ORG_UPDATE = "https://{gristhost}/api/orgs/{orgId}"

@@ -30,8 +30,8 @@ module Grist
     rescue APIError => e
       res = Grist::Response.new(code: response&.code, error: e.message, type: e.class)
       res.log_error
-      raise APIError, res.print_error
-    rescue StandardError => e
+      res
+    rescue StandardError, Grist::NotFound => e
       res = Grist::Response.new(code: response&.code, error: e.message, type: e.class)
       res.log_error
       res

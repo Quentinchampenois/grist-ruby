@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  app:
+    image: gristlabs/grist:latest
+    ports:
+      - "8484:8484"
+    volumes:
+      - ./volumes/data:/persist:rw
+    environment:
+      - GRIST_SESSION_SECRET=secret

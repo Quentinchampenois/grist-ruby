@@ -10,35 +10,50 @@ raise ArgumentError, "You must provide env var : 'GRIST_API_URL'" if ENV.fetch("
 
 orgs = Grist::Type::Organization.all
 org = orgs.last
+
+if org.nil?
+   puts "No organization present"
+   exit 0
+end
+
 puts "Org: #{org.name} - ID: #{org.id}"
-ws = org.create_workspace({ name: "Workspace N°#{rand(1_000)}" })
+
+ws_name = "Workspace N°#{rand(1_000)}"
+puts "Creating workspace #{ws_name}..."
+ws = org.create_workspace({ name: ws_name })
+
+puts "Creating document 'demo' into workspace '#{ws_name}'..."
 doc = ws.create_doc({
-                      name: "Decidim",
+                      name: "Demo",
                       isPinned: true
                     })
+
+puts "Creating document 'Github' into workspace '#{ws_name}'"
 ws.create_doc({
                 name: "Github",
                 isPinned: false
               })
 
+puts "Creating tables for document 'demo' into workspace '#{ws_name}'..."
 doc.create_tables({
                     "tables" => [
-                      { "id" => "Community modules",
+                      { "id" => "Community gems",
                         "columns" => [
-                          { "id" => "name", "fields" => { "label" => "Module name" } },
+                          { "id" => "name", "fields" => { "label" => "Gem name" } },
                           { "id" => "description", "fields" => { "label" => "Description" } },
-                          { "id" => "version", "fields" => { "label" => "Decidim version" } }
+                          { "id" => "link", "fields" => { "label" => "RubyGems link" } }
                         ] }
                     ]
                   })
 
+puts "Creating tables for document 'demo' into workspace '#{ws_name}'..."
 doc.create_tables({
                     "tables" => [
-                      { "id" => "Instances",
+                      { "id" => "Standard library",
                         "columns" => [
-                          { "id" => "name", "fields" => { "label" => "Decidim name" } },
-                          { "id" => "url", "fields" => { "label" => "Public URL" } },
-                          { "id" => "version", "fields" => { "label" => "Decidim version" } }
+                          { "id" => "name", "fields" => { "label" => "Library name" } },
+                          { "id" => "url", "fields" => { "label" => "Source code public URL" } },
+                          { "id" => "version", "fields" => { "label" => "Latest version" } }
                         ] }
                     ]
                   })
@@ -53,14 +68,16 @@ tables.each do |table|
 end
 
 table = tables.last
+
+puts "Creating records into table from doc 'demo' into workspace '#{ws_name}'..."
 table.create_records("records" => [
                        {
                          "fields" => {
-                           "name" => "Decidim Barcelona",
-                           "url" => "https://decidim.barcelona",
-                           "version" => "0.29.2"
+                           "name" => "did_you_mean",
+                           "url" => "https://github.com/ruby/did_you_mean",
+                           "version" => "v2.0.0"
                          }
                        }
                      ])
 
-puts "Ending."
+puts "Terminated, go check at http://localhost:8484/o/demo"
