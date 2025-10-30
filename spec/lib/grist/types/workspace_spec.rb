@@ -123,8 +123,8 @@ RSpec.describe Grist::Type::Workspace do
       expect(got.name).to eq("New Doc")
     end
 
-    it "uses create_doc_path to create a new doc" do
-      got = subject.send(:create_doc_path)
+    it "uses doc_path to create a new doc" do
+      got = subject.send(:doc_path)
       expect(got).to eq("/workspaces/#{id}/docs")
     end
   end
